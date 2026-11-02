@@ -25,9 +25,17 @@ FetchContent_Declare(
   GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(raylib)
 
+# 把演示画布用的等宽字体（JetBrains Mono 子集，OFL 协议）嵌入为 C 数组，桌面与 Web 都无需额外文件
+set(GA_FONT_FILE "${CMAKE_SOURCE_DIR}/common/assets/JetBrainsMono-Medium-subset.ttf")
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${GA_FONT_FILE}")
+file(READ "${GA_FONT_FILE}" GA_FONT_HEX HEX)
+string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," GA_FONT_BYTES "${GA_FONT_HEX}")
+file(WRITE "${CMAKE_BINARY_DIR}/generated/ga_font_data.h"
+  "#pragma once\n// 由 CMake 生成，请勿手动编辑\nstatic const unsigned char kGaFontData[] = {${GA_FONT_BYTES}};\n")
+
 # 演示公共框架
 add_library(ga_demo STATIC common/demo.cpp)
-target_include_directories(ga_demo PUBLIC common)
+target_include_directories(ga_demo PUBLIC common PRIVATE "${CMAKE_BINARY_DIR}/generated")
 target_link_libraries(ga_demo PUBLIC raylib)
 
 # 网页产物输出目录：<repo>/public/demos/<name>/index.{html,js,wasm}
@@ -49,6 +57,7 @@ function(add_demo name)
       -sUSE_GLFW=3
       -sALLOW_MEMORY_GROWTH=1
       -sENVIRONMENT=web
+      -sEXPORTED_RUNTIME_METHODS=UTF8ToString
       --shell-file "${CMAKE_SOURCE_DIR}/web/shell.html")
     set_property(TARGET ${target} APPEND PROPERTY LINK_DEPENDS "${CMAKE_SOURCE_DIR}/web/shell.html")
   endif()

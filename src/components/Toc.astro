@@ -1,0 +1,169 @@
+---
+/** 书籍式目录：卷号 + 章节 + 引导点 + 状态 */
+import { parts } from '../data/curriculum';
+
+const statusLabel = { published: '阅读', writing: '写作中', planned: '计划中' } as const;
+---
+
+<ol class="toc not-content">
+	{
+		parts.map((part) => {
+			const live = part.chapters.some((c) => c.status === 'published');
+			return (
+				<li class:list={['part', { live }]}>
+					<div class="part-head">
+						<span class="numeral">{part.numeral}</span>
+						<h3>{part.title}</h3>
+						<span class="en">{part.en}</span>
+					</div>
+					<ol class="chapters">
+						{part.chapters.map((c) => {
+							const Tag = c.href && c.status === 'published' ? 'a' : 'div';
+							return (
+								<li>
+									<Tag class:list={['row', c.status]} href={Tag === 'a' ? c.href : undefined}>
+										<span class="no">{c.no}</span>
+										<span class="title">{c.title}</span>
+										<span class="leader" aria-hidden="true" />
+										<span class="status">
+											{statusLabel[c.status]}
+											{c.status === 'published' && <span aria-hidden="true"> →</span>}
+										</span>
+									</Tag>
+								</li>
+							);
+						})}
+					</ol>
+				</li>
+			);
+		})
+	}
+</ol>
+
+<style>
+	.toc {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		border-top: 1px solid var(--ga-ink);
+	}
+	.part {
+		display: grid;
+		grid-template-columns: 5.5rem 1fr;
+		gap: 0 1.5rem;
+		padding: 2rem 0 2.25rem;
+		border-bottom: 1px solid var(--sl-color-hairline-light);
+	}
+	.part-head {
+		display: contents;
+	}
+	.numeral {
+		grid-row: span 3;
+		font-family: var(--ga-font-serif);
+		font-size: 2.75rem;
+		line-height: 1;
+		color: var(--sl-color-gray-5);
+		font-weight: 500;
+	}
+	.live .numeral {
+		color: var(--ga-vermilion);
+	}
+	h3 {
+		margin: 0;
+		font-family: var(--ga-font-serif);
+		font-size: 1.5rem;
+		font-weight: 600;
+		line-height: 1.2;
+		color: var(--sl-color-white);
+	}
+	.en {
+		margin-top: 0.35rem;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.6875rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--sl-color-gray-3);
+	}
+	.chapters {
+		grid-column: 2;
+		list-style: none;
+		padding: 0;
+		margin: 1.25rem 0 0;
+	}
+	.row {
+		display: flex;
+		align-items: baseline;
+		gap: 0.75rem;
+		padding: 0.4rem 0;
+		color: var(--sl-color-gray-3);
+		text-decoration: none;
+		font-size: 0.9375rem;
+	}
+	.no {
+		flex-shrink: 0;
+		width: 2.25rem;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.75rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-gray-4);
+	}
+	.title {
+		min-width: 0;
+	}
+	.leader {
+		flex: 1;
+		min-width: 1.5rem;
+		border-bottom: 1px dotted var(--sl-color-gray-5);
+		transform: translateY(-0.3em);
+	}
+	.status {
+		flex-shrink: 0;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.6875rem;
+		letter-spacing: 0.06em;
+		color: var(--sl-color-gray-4);
+	}
+	.row.published {
+		color: var(--sl-color-white);
+	}
+	.row.published .no,
+	.row.published .status {
+		color: var(--ga-vermilion);
+	}
+	.row.published .leader {
+		border-bottom-color: var(--ga-vermilion);
+		opacity: 0.5;
+	}
+	a.row:hover .title {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.25em;
+	}
+	a.row:focus-visible {
+		outline: 2px solid var(--ga-vermilion);
+		outline-offset: 2px;
+	}
+
+	@media (max-width: 40rem) {
+		.part {
+			grid-template-columns: 1fr;
+		}
+		.numeral {
+			grid-row: auto;
+			font-size: 2rem;
+			margin-bottom: 0.5rem;
+		}
+		.chapters {
+			grid-column: 1;
+		}
+		.leader {
+			display: none;
+		}
+		.row {
+			justify-content: space-between;
+		}
+		.title {
+			flex: 1;
+		}
+	}
+</style>

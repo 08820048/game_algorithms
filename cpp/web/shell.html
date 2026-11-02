@@ -3,50 +3,81 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Demo</title>
+  <title>Demo · 游戏算法图解</title>
   <style>
+    /* 与网站 src/styles/custom.css 的 --ga-* 变量保持一致 */
     :root {
-      --bg: #fafaf7; --fg: #202228; --muted: #6b6e78; --border: #e2e2dc;
-      --btn: #ffffff; --btn-hover: #f0f0ea; --accent: #2a7de1;
+      --raised: #fbf9f4; --ink: #1a1915; --muted: #8a8478; --rule: #e2ddd1;
+      --hover: #efebe2; --vermilion: #c8402a;
+      --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     }
     html[data-theme="dark"] {
-      --bg: #17191f; --fg: #e6e8ee; --muted: #8c919e; --border: #2c2f38;
-      --btn: #22252d; --btn-hover: #2c3039; --accent: #6aa8ff;
+      --raised: #1b1a17; --ink: #ece7dc; --muted: #8f897d; --rule: #2c2a26;
+      --hover: #24221f; --vermilion: #e8664a;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; background: var(--bg); color: var(--fg);
-      font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+    html, body { margin: 0; background: var(--raised); color: var(--ink);
+      font: 12px/1.4 var(--mono); -webkit-font-smoothing: antialiased; }
     #stage { position: relative; }
     #canvas { display: block; width: 100%; height: auto; touch-action: none; outline: none; }
     #overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      color: var(--muted); background: var(--bg); }
+      color: var(--muted); background: var(--raised); letter-spacing: 0.08em; }
     #overlay[hidden] { display: none; }
-    #toolbar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-      padding: 8px 10px; border-top: 1px solid var(--border); }
-    button { font: inherit; color: var(--fg); background: var(--btn); border: 1px solid var(--border);
-      border-radius: 6px; padding: 4px 10px; cursor: pointer; min-width: 64px; }
-    button:hover { background: var(--btn-hover); }
-    button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-    label { display: inline-flex; align-items: center; gap: 6px; margin-left: 8px; color: var(--muted); }
-    input[type="range"] { width: 110px; accent-color: var(--accent); }
-    #speedValue { font-variant-numeric: tabular-nums; min-width: 3.2em; }
-    #status { margin-left: auto; color: var(--muted); }
+
+    #toolbar { display: flex; align-items: stretch; border-top: 1px solid var(--ink); min-height: 40px; }
+    .group { display: flex; align-items: stretch; }
+    button { font: inherit; color: var(--ink); background: transparent; border: 0;
+      border-right: 1px solid var(--rule); padding: 0 14px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.04em; }
+    button:hover:not(:disabled) { background: var(--hover); }
+    button:disabled { color: var(--muted); cursor: default; }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--vermilion); outline-offset: -2px; }
+    #play { min-width: 76px; }
+    #play .icon { display: inline-block; width: 8px; height: 10px; }
+    #play[data-state="playing"] .icon { border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
+    #play:not([data-state="playing"]) .icon { border-left: 8px solid var(--vermilion);
+      border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+    kbd { font: inherit; color: var(--muted); }
+
+    .speed { display: flex; align-items: center; gap: 10px; padding: 0 14px; border-right: 1px solid var(--rule);
+      color: var(--muted); }
+    input[type="range"] { -webkit-appearance: none; appearance: none; width: 96px; height: 16px; background: transparent; }
+    input[type="range"]::-webkit-slider-runnable-track { height: 1px; background: var(--ink); }
+    input[type="range"]::-moz-range-track { height: 1px; background: var(--ink); }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 9px; height: 9px; margin-top: -4px;
+      background: var(--vermilion); border: 0; border-radius: 0; }
+    input[type="range"]::-moz-range-thumb { width: 9px; height: 9px; background: var(--vermilion); border: 0; border-radius: 0; }
+    #speedValue { color: var(--ink); font-variant-numeric: tabular-nums; min-width: 3.5em; }
+
+    #status { margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 0 14px;
+      color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
+    #status .dot { width: 6px; height: 6px; background: var(--muted); flex-shrink: 0; }
+    #status[data-state="playing"] .dot { background: var(--vermilion); }
+    #status[data-state="finished"] .dot { background: var(--ink); }
+
+    @media (max-width: 560px) {
+      #toolbar { flex-wrap: wrap; }
+      #status { width: 100%; border-top: 1px solid var(--rule); min-height: 32px; margin-left: 0; }
+      .speed { border-right: 0; }
+    }
   </style>
 </head>
 <body>
   <div id="stage">
     <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
-    <div id="overlay">加载中…</div>
+    <div id="overlay">LOADING…</div>
   </div>
   <div id="toolbar">
-    <button id="play" type="button" disabled>暂停</button>
-    <button id="step" type="button" disabled>单步</button>
-    <button id="reset" type="button" disabled>重置</button>
-    <label>速度
-      <input id="speed" type="range" min="-3" max="5" step="1" value="0" disabled>
+    <div class="group">
+      <button id="play" type="button" disabled><span class="icon" aria-hidden="true"></span><span class="label">播放</span></button>
+      <button id="step" type="button" disabled>单步</button>
+      <button id="reset" type="button" disabled>重置</button>
+    </div>
+    <label class="speed">速度
+      <input id="speed" type="range" min="-3" max="5" step="1" value="0" disabled aria-label="执行速度">
       <span id="speedValue">1×</span>
     </label>
-    <span id="status"></span>
+    <div id="status" aria-live="polite"><span class="dot"></span><span class="text"></span></div>
   </div>
 
   <script>
@@ -54,7 +85,8 @@
       var $ = function (id) { return document.getElementById(id); };
       var playBtn = $('play'), stepBtn = $('step'), resetBtn = $('reset');
       var speedInput = $('speed'), speedValue = $('speedValue'), status = $('status');
-      var ready = false;
+      var statusText = status.querySelector('.text');
+      var ready = false, lastDetail = '', lastState = '已暂停';
 
       // ---- 主题：嵌入在文章里时跟随父页面（Starlight 的 data-theme），单独打开时跟随系统 ----
       function parentRoot() {
@@ -85,7 +117,8 @@
 
       // ---- 工具栏 ----
       function speedFromSlider() { return Math.pow(2, Number(speedInput.value)); }
-      function formatSpeed(s) { return (s < 1 ? s.toFixed(s < 0.25 ? 3 : 2).replace(/0+$/, '') : s) + '×'; }
+      function formatSpeed(s) { return s >= 1 ? s + '×' : '1/' + Math.round(1 / s) + '×'; }
+      function renderStatus() { statusText.textContent = lastDetail ? lastDetail : lastState; }
       playBtn.onclick = function () { Module._demo_toggle_play(); };
       stepBtn.onclick = function () { Module._demo_step(); };
       resetBtn.onclick = function () { Module._demo_reset(); };
@@ -112,7 +145,7 @@
           applyTheme();
           Module._demo_set_speed(speedFromSlider());
         },
-        // 由 C++ 侧（cpp/common/demo.cpp）在状态变化时回调
+        // 以下两个回调由 C++ 侧（cpp/common/demo.cpp）在状态变化时调用
         onDemoState: function (playing, finished) {
           if (!ready) {
             ready = true;
@@ -120,12 +153,19 @@
             [playBtn, stepBtn, resetBtn, speedInput].forEach(function (el) { el.disabled = false; });
             if (!visible) Module._demo_set_visible(0);
           }
-          playBtn.textContent = playing ? '暂停' : (finished ? '重播' : '播放');
-          status.textContent = finished ? '已完成' : (playing ? '运行中' : '已暂停');
+          playBtn.dataset.state = playing ? 'playing' : 'paused';
+          playBtn.querySelector('.label').textContent = playing ? '暂停' : (finished ? '重播' : '播放');
+          status.dataset.state = finished ? 'finished' : (playing ? 'playing' : 'paused');
+          lastState = finished ? '已完成' : (playing ? '运行中' : '已暂停');
+          renderStatus();
+        },
+        onDemoStatus: function (text) {
+          lastDetail = text;
+          renderStatus();
         },
       };
       window.addEventListener('error', function () {
-        $('overlay').textContent = '演示加载失败：你的浏览器可能不支持 WebGL / WebAssembly';
+        $('overlay').textContent = '演示加载失败：浏览器可能不支持 WebGL / WebAssembly';
       });
       applyTheme();
     })();

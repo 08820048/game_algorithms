@@ -2,35 +2,9 @@
 title: 游戏算法图解
 description: 用可交互的演示和 C++ 代码，讲清楚游戏开发中的常见算法。
 template: splash
-hero:
-  tagline: 寻路、碰撞、AI、程序化生成……每一个算法都配有可以亲手操作的演示，以及经过测试、可直接复用的 C++ 实现。
-  actions:
-    - text: 从第一篇开始
-      link: /pathfinding/bfs/
-      icon: right-arrow
-    - text: 系列路线图
-      link: /guide/roadmap/
-      variant: minimal
+pagefind: false
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
-import Demo from '../../components/Demo.astro';
+import Home from '../../components/Home.astro';
 
-<Demo name="bfs" title="BFS 洪水填充" caption="试一试：在格子上拖动画墙，或者拖动 S / G 改变起点和终点" />
-
-## 这个系列有什么不同
-
-<CardGrid>
-	<Card title="先看懂，再写代码" icon="seti:image">
-		每篇文章都从一个游戏场景出发，先用图和交互演示建立直觉，再进入代码实现。
-	</Card>
-	<Card title="演示即代码" icon="seti:cpp">
-		网页里运行的演示由文章中的 C++ 代码通过 WebAssembly 编译而来，两者完全一致。
-	</Card>
-	<Card title="可单步、可调参" icon="setting">
-		播放、暂停、单步执行、调节速度，观察算法每一步的内部状态。
-	</Card>
-	<Card title="拿来就能用" icon="puzzle">
-		算法与渲染完全分离，头文件可以直接拷进你的引擎或项目。
-	</Card>
-</CardGrid>
+<Home />

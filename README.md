@@ -21,8 +21,12 @@ cpp/
 public/demos/<name>/        # Emscripten 产物（提交到仓库，部署时无需 Emscripten）
 src/
 ├── components/
-│   ├── Demo.astro          # <Demo name="bfs" title="..." />：嵌入 wasm 演示
+│   ├── Home.astro / Toc.astro   # 首页与书籍式目录
+│   ├── overrides/          # 覆盖 Starlight 的页眉标题、站点标识
+│   ├── Demo.astro          # <Demo name="bfs" title="..." label="图 1.1" />：嵌入 wasm 演示
 │   └── CppSnippet.astro    # <CppSnippet file="..." region="..." />：引用 cpp/ 中的代码片段
+├── data/curriculum.ts      # 全书目录与发布状态
+├── styles/custom.css       # 技术手稿主题（配色、字体、排版）
 └── content/docs/           # 文章（MDX）
 scripts/
 ├── build-demos.sh          # npm run demos:build
@@ -46,7 +50,7 @@ scripts/
 3. 在需要被文章引用的代码两侧加 `// #region <名字>` / `// #endregion`
 4. `npm run cpp:test` → `npm run demos:build`
 5. 在 `src/content/docs/<模块>/` 下写 MDX，用 `<Demo>` 和 `<CppSnippet>` 嵌入演示与代码
-6. 新模块需要在 `astro.config.mjs` 的 `sidebar` 中加一个分组；更新 `guide/roadmap.md`
+6. 在 `src/data/curriculum.ts` 中把对应章节改为 `status: 'published'` 并填上 `href`（首页目录、路线图、文章页眉都读这份数据）；新的一卷需要在 `astro.config.mjs` 的 `sidebar` 中加一个分组
 
 ### 约定
 

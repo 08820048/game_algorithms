@@ -1,0 +1,283 @@
+---
+import Demo from './Demo.astro';
+import Toc from './Toc.astro';
+import { stats } from '../data/curriculum';
+---
+
+<div class="home not-content">
+	<header class="masthead">
+		<p class="kicker">Game Algorithms, Illustrated · C++20 / WebAssembly</p>
+		<h1>游戏算法<br />图解</h1>
+		<div class="intro">
+			<p class="lede">
+				寻路、碰撞、AI 与程序化生成。每个算法都配有可以亲手操作、单步执行的演示，以及经过测试、可直接放进项目的
+				C++ 实现。
+			</p>
+			<div class="actions">
+				<a class="btn primary" href="/pathfinding/bfs/">从第一章读起</a>
+				<a class="btn" href="#contents">目录</a>
+			</div>
+		</div>
+		<dl class="colophon">
+			<div><dt>篇目</dt><dd>{stats.total}</dd></div>
+			<div><dt>已发布</dt><dd>{stats.published}</dd></div>
+			<div><dt>语言</dt><dd>C++20</dd></div>
+			<div><dt>演示</dt><dd>raylib · WASM</dd></div>
+		</dl>
+	</header>
+
+	<section class="figure">
+		<Demo
+			name="bfs"
+			title="BFS 洪水填充"
+			label="图 0.1"
+			caption="广度优先搜索。在格子上拖动可以画墙，拖动 S / G 可以移动起点和终点。"
+		/>
+	</section>
+
+	<section class="principles" aria-label="这本书的写法">
+		<div>
+			<h2>先看懂，再写代码</h2>
+			<p>每一章都从一个具体的游戏问题出发，先用图和演示建立直觉，再进入实现。</p>
+		</div>
+		<div>
+			<h2>演示就是代码</h2>
+			<p>网页里运行的演示由正文中的 C++ 编译而来，文中的代码片段直接取自仓库源码。</p>
+		</div>
+		<div>
+			<h2>拿来就能用</h2>
+			<p>算法与渲染完全分离，每个头文件都附带单元测试，可以直接放进你的引擎。</p>
+		</div>
+	</section>
+
+	<section class="contents" id="contents">
+		<div class="contents-head">
+			<h2>目录</h2>
+			<p>共 {stats.parts} 卷 {stats.total} 章，持续更新中</p>
+		</div>
+		<Toc />
+	</section>
+
+	<footer class="foot">
+		<span>游戏算法图解 · XuYi 著</span>
+		<span>代码以 MIT 协议开源</span>
+	</footer>
+</div>
+
+<style>
+	.home {
+		--home-width: min(72rem, 100vw - 2 * var(--sl-content-pad-x));
+		width: var(--home-width);
+		margin-inline: calc((100% - var(--home-width)) / 2);
+		padding-bottom: 4rem;
+	}
+
+	/* ---------- 刊头 ---------- */
+	.masthead {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1.15fr 1fr;
+		grid-template-areas:
+			'kicker kicker'
+			'title intro'
+			'colophon colophon';
+		gap: 0 4rem;
+		padding: 4.5rem 0 0;
+	}
+	/* 方格纸：与网格类算法呼应，只铺在刊头区域 */
+	.masthead::before {
+		content: '';
+		position: absolute;
+		inset: 0 calc(50% - 50vw);
+		z-index: -1;
+		background-image:
+			linear-gradient(var(--ga-grid-line) 1px, transparent 1px),
+			linear-gradient(90deg, var(--ga-grid-line) 1px, transparent 1px);
+		background-size: 32px 32px;
+		background-position: center top;
+		mask-image: linear-gradient(to bottom, #000 40%, transparent);
+	}
+	.kicker {
+		grid-area: kicker;
+		margin: 0 0 2rem;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--sl-color-gray-3);
+	}
+	h1 {
+		grid-area: title;
+		margin: 0;
+		font-family: var(--ga-font-serif);
+		font-size: clamp(3.5rem, 9vw, 7rem);
+		font-weight: 700;
+		line-height: 1.02;
+		letter-spacing: 0.02em;
+		color: var(--sl-color-white);
+	}
+	.intro {
+		grid-area: intro;
+		align-self: end;
+		padding-bottom: 0.6rem;
+	}
+	.lede {
+		margin: 0;
+		font-size: 1.125rem;
+		line-height: 1.85;
+		color: var(--sl-color-gray-2);
+		text-wrap: pretty;
+	}
+	.actions {
+		display: flex;
+		gap: 0.75rem;
+		margin-top: 2rem;
+	}
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		height: 2.75rem;
+		padding: 0 1.25rem;
+		border: 1px solid var(--ga-ink);
+		border-radius: 2px;
+		color: var(--ga-ink);
+		font-size: 0.9375rem;
+		text-decoration: none;
+		transition:
+			background-color 150ms ease,
+			color 150ms ease;
+	}
+	.btn:hover {
+		background: var(--sl-color-gray-6);
+	}
+	.btn.primary {
+		background: var(--ga-ink);
+		color: var(--ga-paper);
+	}
+	.btn.primary:hover {
+		background: var(--ga-vermilion);
+		border-color: var(--ga-vermilion);
+	}
+	.btn:focus-visible {
+		outline: 2px solid var(--ga-vermilion);
+		outline-offset: 2px;
+	}
+	.colophon {
+		grid-area: colophon;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		margin: 4rem 0 0;
+		border-top: 1px solid var(--ga-ink);
+	}
+	.colophon div {
+		padding: 0.9rem 0;
+	}
+	.colophon div + div {
+		padding-left: 1.25rem;
+		border-left: 1px solid var(--sl-color-hairline-light);
+	}
+	.colophon dt {
+		font-family: var(--__sl-font-mono);
+		font-size: 0.6875rem;
+		letter-spacing: 0.1em;
+		color: var(--sl-color-gray-3);
+	}
+	.colophon dd {
+		margin: 0.2rem 0 0;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.9375rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-white);
+	}
+
+	/* ---------- 图 ---------- */
+	.figure {
+		margin-top: 1rem;
+	}
+
+	/* ---------- 写法 ---------- */
+	.principles {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 2.5rem;
+		margin: 5rem 0 6rem;
+	}
+	.principles div {
+		padding-top: 1rem;
+		border-top: 1px solid var(--sl-color-hairline-light);
+	}
+	.principles h2 {
+		margin: 0 0 0.6rem;
+		font-family: var(--ga-font-serif);
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.principles p {
+		margin: 0;
+		font-size: 0.9375rem;
+		line-height: 1.8;
+		color: var(--sl-color-gray-3);
+	}
+
+	/* ---------- 目录 ---------- */
+	.contents {
+		scroll-margin-top: calc(var(--sl-nav-height) + 1rem);
+	}
+	.contents-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 1.25rem;
+	}
+	.contents-head h2 {
+		margin: 0;
+		font-family: var(--ga-font-serif);
+		font-size: 2.25rem;
+		font-weight: 700;
+		color: var(--sl-color-white);
+	}
+	.contents-head p {
+		margin: 0;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.75rem;
+		color: var(--sl-color-gray-3);
+	}
+
+	.foot {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 5rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--sl-color-hairline-light);
+		font-family: var(--__sl-font-mono);
+		font-size: 0.75rem;
+		color: var(--sl-color-gray-4);
+	}
+
+	@media (max-width: 50rem) {
+		.masthead {
+			grid-template-columns: 1fr;
+			grid-template-areas: 'kicker' 'title' 'intro' 'colophon';
+			padding-top: 2.5rem;
+		}
+		.intro {
+			margin-top: 1.5rem;
+		}
+		.colophon {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.colophon div:nth-child(3) {
+			padding-left: 0;
+			border-left: 0;
+		}
+		.colophon div:nth-child(n + 3) {
+			border-top: 1px solid var(--sl-color-hairline-light);
+		}
+		.principles {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+			margin: 3rem 0 4rem;
+		}
+	}
+</style>

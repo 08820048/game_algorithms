@@ -1,0 +1,69 @@
+---
+/**
+ * 文章页眉：卷号 · 章节号 + 宋体标题 + 导语。
+ * 首页（splash）不显示，由 Home 组件自己排版。
+ */
+const PAGE_TITLE_ID = '_top'; // 与 Starlight 内部常量一致，目录导航的“概述”锚点依赖它
+import { locate } from '../../data/curriculum';
+
+const route = Astro.locals.starlightRoute;
+const { title, description, template } = route.entry.data;
+const isHome = template === 'splash';
+const found = locate(Astro.url.pathname);
+const eyebrow = found ? `${found.part.numeral} · ${found.part.title}` : '导读';
+const no = found?.chapter.no;
+---
+
+{
+	isHome ? (
+		<h1 id={PAGE_TITLE_ID} class="sr-only">
+			{title}
+		</h1>
+	) : (
+		<header class="ga-title">
+			<p class="eyebrow">
+				<span>{eyebrow}</span>
+				{no && <span class="no">§ {no}</span>}
+			</p>
+			<h1 id={PAGE_TITLE_ID}>{title}</h1>
+			{description && <p class="lede">{description}</p>}
+		</header>
+	)
+}
+
+<style>
+	.ga-title {
+		margin-top: 1.5rem;
+		padding-bottom: 1.75rem;
+		border-bottom: 1px solid var(--ga-ink);
+	}
+	.eyebrow {
+		display: flex;
+		gap: 1rem;
+		margin: 0 0 1rem;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+		color: var(--sl-color-gray-3);
+	}
+	.eyebrow .no {
+		color: var(--ga-vermilion);
+	}
+	h1 {
+		margin: 0;
+		font-family: var(--ga-font-serif);
+		font-size: clamp(2rem, 4.5vw, 2.875rem);
+		font-weight: 700;
+		line-height: 1.25;
+		letter-spacing: 0.01em;
+		color: var(--sl-color-white);
+		text-wrap: balance;
+	}
+	.lede {
+		margin: 1rem 0 0;
+		font-size: 1.0625rem;
+		line-height: 1.8;
+		color: var(--sl-color-gray-3);
+		text-wrap: pretty;
+	}
+</style>

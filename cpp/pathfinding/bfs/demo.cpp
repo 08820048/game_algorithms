@@ -5,6 +5,7 @@
 
 #include <cstdio>
 #include <memory>
+#include <string>
 
 #include "bfs.h"
 #include "demo.h"
@@ -84,72 +85,83 @@ public:
     void draw() const override {
         const Palette& p = palette();
         const BfsStepper& s = *search_;
+        const float hl = hairline();
 
         // 计算最大距离，用于已访问格子的颜色渐变
         int maxDist = 1;
         for (int i = 0; i < grid_.size(); ++i) maxDist = std::max(maxDist, s.distance(grid_.cellAt(i)));
 
-        // 1. 格子底色：墙 / 已访问（按距离渐变）
+        // 1. 已访问格子：离起点越近颜色越深，形成"等高线"
         for (int i = 0; i < grid_.size(); ++i) {
             Cell c = grid_.cellAt(i);
-            Rectangle r = cellRect(c);
-            if (grid_.isWall(c)) {
-                DrawRectangleRec(r, p.wall);
-                continue;
-            }
             int d = s.distance(c);
-            if (d >= 0) {
+            if (d >= 0 && !grid_.isWall(c)) {
                 float t = static_cast<float>(d) / static_cast<float>(maxDist);
-                DrawRectangleRec(r, ColorLerp(p.visitedNear, p.visitedFar, t));
+                DrawRectangleRec(cellRect(c), ColorLerp(p.visitedNear, p.visitedFar, t));
             }
         }
 
-        // 2. 边界（队列中的格子）
-        for (Cell c : s.frontier()) DrawRectangleRec(inset(cellRect(c), 3), p.frontier);
+        // 2. 边界（队列中的格子）：内缩的实心方块
+        for (Cell c : s.frontier()) DrawRectangleRec(inset(cellRect(c), 5), p.frontier);
 
-        // 3. 网格线
-        for (int x = 0; x <= kCols; ++x) DrawLine(x * kCell, 0, x * kCell, kRows * kCell, p.gridLine);
-        for (int y = 0; y <= kRows; ++y) DrawLine(0, y * kCell, kCols * kCell, y * kCell, p.gridLine);
+        // 3. 网格细线（一个物理像素）
+        for (int x = 0; x <= kCols; ++x) {
+            DrawLineEx({x * float(kCell), 0}, {x * float(kCell), kRows * float(kCell)}, hl, p.gridLine);
+        }
+        for (int y = 0; y <= kRows; ++y) {
+            DrawLineEx({0, y * float(kCell)}, {kCols * float(kCell), y * float(kCell)}, hl, p.gridLine);
+        }
 
-        // 4. 距离数字
+        // 4. 墙：画在网格线之上，保持整块墨色
+        for (int i = 0; i < grid_.size(); ++i) {
+            Cell c = grid_.cellAt(i);
+            if (grid_.isWall(c)) DrawRectangleRec(cellRect(c), p.wall);
+        }
+
+        // 5. 距离数字（边界格子上用深色，保证在赭黄底上可读）
+        std::vector<char> onFrontier(grid_.size(), 0);
+        for (Cell c : s.frontier()) onFrontier[grid_.index(c)] = 1;
         for (int i = 0; i < grid_.size(); ++i) {
             Cell c = grid_.cellAt(i);
             int d = s.distance(c);
             if (d <= 0 || c == goal_) continue;
             char buf[8];
             std::snprintf(buf, sizeof buf, "%d", d);
-            int w = MeasureText(buf, 10);
-            DrawText(buf, c.x * kCell + (kCell - w) / 2, c.y * kCell + 11, 10, p.textMuted);
+            drawTextCentered(buf, center(c), 10, onFrontier[i] ? p.startLabel : p.textMuted);
         }
 
-        // 5. 当前正在展开的格子
+        // 6. 当前正在展开的格子：墨色细框
         if (s.hasCurrent() && !s.found()) {
-            DrawRectangleLinesEx(inset(cellRect(s.current()), 1), 3, p.current);
+            DrawRectangleLinesEx(inset(cellRect(s.current()), 2), 2, p.current);
         }
 
-        // 6. 找到的路径
+        // 7. 找到的路径：朱红线
         auto path = s.path();
         for (size_t i = 1; i < path.size(); ++i) {
-            DrawLineEx(center(path[i - 1]), center(path[i]), 5, p.path);
+            DrawLineEx(center(path[i - 1]), center(path[i]), 3, p.path);
         }
-        for (Cell c : path) DrawCircleV(center(c), 4, p.path);
+        for (size_t i = 1; i + 1 < path.size(); ++i) DrawCircleV(center(path[i]), 3.5f, p.path);
 
-        // 7. 鼠标悬停
+        // 8. 鼠标悬停
         if (hover_.x >= 0) DrawRectangleRec(cellRect(hover_), p.hover);
 
-        // 8. 起点 / 终点
-        drawEndpoint(start_, p.start, "S");
-        drawEndpoint(goal_, p.goal, "G");
+        // 9. 起点（墨）/ 终点（朱红）
+        drawEndpoint(start_, p.start, p.startLabel, "S");
+        drawEndpoint(goal_, p.goal, p.goalLabel, "G");
+    }
 
-        // 9. 统计面板
-        char info[96];
+    std::string status() const override {
+        const BfsStepper& s = *search_;
         const char* state = s.found() ? "found" : (s.done() ? "unreachable" : "searching");
-        std::snprintf(info, sizeof info, "expanded %d   frontier %d   %s", s.expandedCount(),
-                      static_cast<int>(s.frontier().size()), state);
-        int w = MeasureText(info, 10);
-        Rectangle panel{static_cast<float>(kCols * kCell - w - 20), 6, static_cast<float>(w + 14), 20};
-        DrawRectangleRounded(panel, 0.4f, 6, p.panel);
-        DrawText(info, static_cast<int>(panel.x) + 7, 11, 10, p.text);
+        char buf[96];
+        if (s.found()) {
+            std::snprintf(buf, sizeof buf, "expanded %d \u00b7 path %d \u00b7 %s", s.expandedCount(),
+                          static_cast<int>(s.path().size()) - 1, state);
+        } else {
+            std::snprintf(buf, sizeof buf, "expanded %d \u00b7 frontier %d \u00b7 %s", s.expandedCount(),
+                          static_cast<int>(s.frontier().size()), state);
+        }
+        return buf;
     }
 
 private:
@@ -160,10 +172,9 @@ private:
     static Vector2 center(Cell c) {
         return {c.x * kCell + kCell * 0.5f, c.y * kCell + kCell * 0.5f};
     }
-    static void drawEndpoint(Cell c, Color color, const char* label) {
-        DrawCircleV(center(c), kCell * 0.4f, color);
-        int w = MeasureText(label, 20);
-        DrawText(label, c.x * kCell + (kCell - w) / 2, c.y * kCell + 7, 20, RAYWHITE);
+    static void drawEndpoint(Cell c, Color fill, Color label, const char* text) {
+        DrawCircleV(center(c), kCell * 0.36f, fill);
+        drawTextCentered(text, center(c), 14, label);
     }
 
     Grid grid_;

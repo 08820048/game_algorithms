@@ -1,9 +1,310 @@
-/* 全站样式微调 */
+/* =============================================================
+   游戏算法图解 · 技术手稿主题
+   纸张底色 + 墨色文字 + 唯一的朱红强调色；宋体标题，等宽标注。
+   ============================================================= */
+
+/* ---------- 颜色：暗色（Starlight 默认基准） ---------- */
 :root {
-	--sl-content-width: 50rem;
+	--ga-paper: #141311;
+	--ga-raised: #1b1a17;
+	--ga-ink: #ece7dc;
+	--ga-vermilion: #e8664a;
+	--ga-grid-line: rgb(236 231 220 / 0.045);
+
+	--sl-color-white: #f2eee4;
+	--sl-color-gray-1: #e2ddd1;
+	--sl-color-gray-2: #c3bdb0;
+	--sl-color-gray-3: #8f897d;
+	--sl-color-gray-4: #615c53;
+	--sl-color-gray-5: #3a3732;
+	--sl-color-gray-6: #22201d;
+	--sl-color-black: var(--ga-paper);
+
+	--sl-color-accent-low: #3a1c14;
+	--sl-color-accent: #e8664a;
+	--sl-color-accent-high: #f3a28f;
+
+	--sl-color-text: var(--sl-color-gray-2);
+	--sl-color-text-accent: var(--ga-vermilion);
+	--sl-color-bg-nav: var(--ga-paper);
+	--sl-color-bg-sidebar: var(--ga-paper);
+	--sl-color-bg-inline-code: var(--sl-color-gray-6);
+	--sl-color-hairline-light: #2c2a26;
+	--sl-color-hairline: #24221f;
+	--sl-color-hairline-shade: #24221f;
 }
 
-/* 中文排版：稍大的行高更易读 */
+/* ---------- 颜色：亮色 ---------- */
+:root[data-theme='light'] {
+	--ga-paper: #f4f1ea;
+	--ga-raised: #fbf9f4;
+	--ga-ink: #1a1915;
+	--ga-vermilion: #c8402a;
+	--ga-grid-line: rgb(26 25 21 / 0.05);
+
+	--sl-color-white: #1a1915;
+	--sl-color-gray-1: #2b2924;
+	--sl-color-gray-2: #45423b;
+	--sl-color-gray-3: #6e695f;
+	--sl-color-gray-4: #9a948a;
+	--sl-color-gray-5: #d3cdbf;
+	--sl-color-gray-6: #e9e4d9;
+	--sl-color-gray-7: #efebe2;
+	--sl-color-black: var(--ga-paper);
+
+	--sl-color-accent-low: #f5ddd5;
+	--sl-color-accent: #c8402a;
+	--sl-color-accent-high: #9c2f1d;
+
+	--sl-color-text: var(--sl-color-gray-1);
+	--sl-color-text-accent: var(--ga-vermilion);
+	--sl-color-text-invert: var(--ga-paper);
+	--sl-color-bg-nav: var(--ga-paper);
+	--sl-color-bg-sidebar: var(--ga-paper);
+	--sl-color-bg-inline-code: var(--sl-color-gray-6);
+	--sl-color-hairline-light: #e2ddd1;
+	--sl-color-hairline: #e2ddd1;
+	--sl-color-hairline-shade: #e2ddd1;
+}
+
+/* ---------- 字体与尺度 ---------- */
+:root {
+	--ga-font-serif: 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+	--sl-font: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+		'Noto Sans SC', sans-serif;
+	--sl-font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+	--sl-content-width: 46rem;
+	--sl-text-body: 1rem;
+	--sl-line-height: 1.85;
+	--sl-line-height-headings: 1.3;
+	--sl-sidebar-width: 17rem;
+}
+
+::selection {
+	background: var(--sl-color-accent-low);
+	color: var(--sl-color-white);
+}
+
+/* ---------- 页头 ---------- */
+.header {
+	border-bottom: 1px solid var(--sl-color-hairline-light);
+}
+site-search button[data-open-modal] {
+	border-radius: 2px;
+	border-color: var(--sl-color-hairline-light);
+	background: transparent;
+}
+site-search button[data-open-modal]:hover {
+	border-color: var(--sl-color-gray-4);
+}
+site-search kbd {
+	font-family: var(--__sl-font-mono);
+	background: transparent;
+}
+
+/* ---------- 侧边栏 ---------- */
+.sidebar-pane {
+	border-inline-end: 1px solid var(--sl-color-hairline-light);
+}
+.sidebar-content .top-level > li > details > summary .group-label .large {
+	font-family: var(--__sl-font-mono);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--sl-color-gray-3);
+}
+.sidebar-content a {
+	border-radius: 0;
+	font-size: 0.9rem;
+	color: var(--sl-color-gray-2);
+}
+.sidebar-content a:hover {
+	color: var(--sl-color-white);
+}
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+	background: transparent;
+	color: var(--sl-color-white);
+	font-weight: 600;
+	box-shadow: inset 2px 0 0 var(--ga-vermilion);
+}
+.sidebar-content ul ul {
+	border-inline-start-color: var(--sl-color-hairline-light);
+}
+
+/* ---------- 右侧目录 ---------- */
+starlight-toc h2,
+mobile-starlight-toc .toggle {
+	font-family: var(--__sl-font-mono);
+	font-size: 0.6875rem !important;
+	font-weight: 500 !important;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--sl-color-gray-3) !important;
+}
+starlight-toc a {
+	color: var(--sl-color-gray-3);
+}
+starlight-toc a[aria-current='true'] {
+	color: var(--ga-vermilion);
+}
+
+/* ---------- 正文排版 ---------- */
 .sl-markdown-content {
-	line-height: 1.8;
+	font-size: 1.03125rem;
+	color: var(--sl-color-gray-1);
+}
+.sl-markdown-content :is(h2, h3, h4) {
+	font-family: var(--ga-font-serif);
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	color: var(--sl-color-white);
+}
+.sl-markdown-content h2 {
+	margin-top: 3.5rem;
+	font-size: 1.75rem;
+}
+.sl-markdown-content h3 {
+	margin-top: 2.25rem;
+	font-size: 1.3rem;
+}
+.sl-markdown-content :is(h2, h3) + * {
+	margin-top: 0.85rem;
+}
+.sl-markdown-content strong {
+	color: var(--sl-color-white);
+	font-weight: 600;
+}
+.sl-markdown-content a:not(:where(.not-content *)) {
+	color: var(--sl-color-white);
+	text-decoration-color: var(--ga-vermilion);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+}
+.sl-markdown-content a:not(:where(.not-content *)):hover {
+	color: var(--ga-vermilion);
+}
+.sl-markdown-content :not(pre) > code {
+	padding: 0.1em 0.35em;
+	border-radius: 2px;
+	font-size: 0.875em;
+	background: var(--sl-color-bg-inline-code);
+	color: var(--sl-color-white);
+}
+.sl-markdown-content hr {
+	border-color: var(--sl-color-hairline-light);
+}
+.sl-markdown-content :is(ul, ol) > li::marker {
+	color: var(--sl-color-gray-4);
+	font-family: var(--__sl-font-mono);
+	font-size: 0.85em;
+}
+
+/* 表格：只用横向细线 */
+.sl-markdown-content table {
+	display: table;
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9375rem;
+	border-top: 1px solid var(--ga-ink);
+	border-bottom: 1px solid var(--ga-ink);
+}
+.sl-markdown-content :is(th, td) {
+	border: 0;
+	border-bottom: 1px solid var(--sl-color-hairline-light);
+	padding: 0.6rem 1rem 0.6rem 0;
+	background: transparent;
+}
+.sl-markdown-content tr:last-child td {
+	border-bottom: 0;
+}
+.sl-markdown-content th {
+	font-family: var(--__sl-font-mono);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--sl-color-gray-3);
+	border-bottom-color: var(--sl-color-gray-5);
+}
+.sl-markdown-content tr:nth-child(2n) {
+	background: transparent;
+}
+
+/* 旁注：去掉彩色背景和图标，改为手稿式批注框 */
+.starlight-aside {
+	--sl-color-asides-text-accent: var(--sl-color-gray-3);
+	--sl-color-asides-border: var(--sl-color-hairline-light);
+	border: 1px solid var(--sl-color-hairline-light);
+	border-inline-start: 1px solid var(--sl-color-hairline-light);
+	border-radius: 0;
+	background: var(--ga-raised);
+	padding: 1.1rem 1.25rem;
+}
+.starlight-aside--caution,
+.starlight-aside--danger {
+	--sl-color-asides-text-accent: var(--ga-vermilion);
+	border-color: color-mix(in srgb, var(--ga-vermilion) 45%, transparent);
+}
+.starlight-aside__icon {
+	display: none;
+}
+.starlight-aside__title {
+	font-family: var(--__sl-font-mono);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+.starlight-aside__content {
+	font-size: 0.96875rem;
+}
+
+/* 步骤列表 */
+.sl-steps > li::before {
+	border-radius: 0;
+	font-family: var(--__sl-font-mono);
+	font-size: 0.75rem;
+	background: transparent;
+	border: 1px solid var(--sl-color-gray-5);
+	color: var(--sl-color-gray-2);
+}
+
+/* ---------- 文末翻页 ---------- */
+.pagination-links a {
+	border-radius: 0;
+	border-color: var(--sl-color-hairline-light);
+	box-shadow: none;
+}
+.pagination-links a:hover {
+	border-color: var(--ga-ink);
+}
+.pagination-links .link-title {
+	font-family: var(--ga-font-serif);
+	font-weight: 600;
+	color: var(--sl-color-white);
+}
+
+/* 首页：隐藏 Starlight 的标题面板（仅保留给读屏器的 h1）和文末的“最近更新 / 翻页” */
+.content-panel:has(> .sl-container > h1.sr-only) {
+	padding: 0;
+	border: 0;
+}
+.content-panel:has(> .sl-container > h1.sr-only) + .content-panel {
+	border-top: 0;
+	padding-top: 0;
+}
+.sl-markdown-content:has(.home) ~ footer {
+	display: none;
+}
+
+/* 文章页：页眉自带墨线，去掉 Starlight 面板之间的分隔线 */
+.content-panel:has(.ga-title) {
+	border-bottom: 0;
+}
+.content-panel:has(.ga-title) + .content-panel {
+	border-top: 0;
+	padding-top: 0.5rem;
 }

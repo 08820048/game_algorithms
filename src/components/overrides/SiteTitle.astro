@@ -1,0 +1,42 @@
+---
+/** 站点标识：朱红印章 + 宋体书名 */
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<a href={siteTitleHref} class="site-title">
+	<span class="seal" aria-hidden="true">算</span>
+	<span class="name" translate="no">{siteTitle}</span>
+</a>
+
+<style>
+	.site-title {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+		min-width: 0;
+		text-decoration: none;
+		color: var(--sl-color-white);
+		white-space: nowrap;
+	}
+	.seal {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 1.75rem;
+		height: 1.75rem;
+		border-radius: 2px;
+		background: var(--ga-vermilion);
+		color: #fbf9f4;
+		font-family: var(--ga-font-serif);
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1;
+	}
+	.name {
+		overflow: hidden;
+		font-family: var(--ga-font-serif);
+		font-size: 1.125rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+</style>
