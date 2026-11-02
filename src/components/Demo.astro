@@ -1,0 +1,61 @@
+---
+/**
+ * 嵌入一个由 cpp/ 编译出的 WebAssembly 演示。
+ *
+ *   <Demo name="bfs" title="BFS 洪水填充" caption="拖动 S / G，或在格子上拖动画墙" />
+ *
+ * 演示运行在同源 iframe 中（public/demos/<name>/），因此：
+ *   - 多个演示互不干扰，键盘 / 鼠标事件不会影响文章页面
+ *   - iframe 按需懒加载，滚出视口时自动暂停
+ *   - 主题与高度由演示页面自己同步（见 cpp/web/shell.html），这里无需额外脚本
+ */
+interface Props {
+	name: string;
+	title: string;
+	caption?: string;
+}
+
+const { name, title, caption } = Astro.props;
+// 显式指向 index.html：astro dev 不会把 public/ 下的目录路径解析为其中的 index.html
+const src = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/demos/${name}/index.html`;
+---
+
+<figure class="ga-demo not-content">
+	<iframe src={src} title={title} loading="lazy"></iframe>
+	<figcaption>
+		<span>{caption ?? title}</span>
+		<a href={src} target="_blank" rel="noopener">新窗口打开 ↗</a>
+	</figcaption>
+</figure>
+
+<style>
+	.ga-demo {
+		margin: 1.5rem 0;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		overflow: hidden;
+		background: var(--sl-color-bg-nav);
+	}
+	iframe {
+		display: block;
+		width: 100%;
+		/* 加载前的占位高度，加载后由演示页面按实际内容调整 */
+		height: auto;
+		aspect-ratio: 5 / 3.3;
+		border: 0;
+	}
+	figcaption {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.5rem 0.75rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+		border-top: 1px solid var(--sl-color-gray-5);
+	}
+	figcaption a {
+		flex-shrink: 0;
+		color: var(--sl-color-text-accent);
+		text-decoration: none;
+	}
+</style>

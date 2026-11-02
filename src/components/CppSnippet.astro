@@ -1,0 +1,23 @@
+---
+/**
+ * 从 cpp/ 目录中直接引用代码片段：
+ *
+ *   <CppSnippet file="pathfinding/bfs/bfs.h" region="bfs-path" />
+ *
+ * 省略 region 则展示整个文件。片段在构建时读取，源码改了文章自动同步。
+ */
+import { Code } from '@astrojs/starlight/components';
+import { getSnippet } from '../lib/snippet';
+
+interface Props {
+	file: string;
+	region?: string;
+	title?: string;
+	mark?: string | number | (string | number)[];
+}
+
+const { file, region, title, mark } = Astro.props;
+const code = getSnippet(file, region);
+---
+
+<Code code={code} lang="cpp" title={title ?? `cpp/${file}`} mark={mark as any} />

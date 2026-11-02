@@ -1,0 +1,9 @@
+/* 全站样式微调 */
+:root {
+	--sl-content-width: 50rem;
+}
+
+/* 中文排版：稍大的行高更易读 */
+.sl-markdown-content {
+	line-height: 1.8;
+}
