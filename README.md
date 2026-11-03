@@ -11,9 +11,13 @@
 cpp/
 ├── CMakeLists.txt          # add_demo() / add_algo_test() 注册演示与测试
 ├── common/
+│   ├── vec2.h              # 二维向量（0.2 讲解）
 │   ├── grid.h              # 网格地图
-│   └── demo.{h,cpp}        # 演示框架：播放/暂停/单步/调速、亮暗主题、Web 控制接口
+│   ├── check.h             # 极简单元测试辅助
+│   ├── demo.{h,cpp}        # 演示框架：播放/暂停/单步/调速、亮暗主题、Web 控制接口
+│   └── ui.{h,cpp}          # 画布内控件：按钮、开关、滑块
 ├── web/shell.html          # Web 演示页面模板（工具栏、主题同步、自适应高度、离屏暂停）
+├── foundations/            # 序 · 基础工具：game_loop / vectors / interpolation / random
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试
@@ -41,7 +45,7 @@ scripts/
 | `npm run build` | 构建静态站点到 `dist/` |
 | `npm run cpp:test` | 桌面端编译全部演示 + 运行单元测试 |
 | `npm run demos:build` | 用 Emscripten 编译 Web 演示到 `public/demos/`（需 `brew install emscripten`） |
-| `./build/desktop/demo_bfs` | 桌面端运行 BFS 演示 |
+| `./build/desktop/demo_<name>` | 桌面端运行某个演示，如 `demo_bfs`、`demo_game_loop` |
 
 ## 新增一篇文章的流程
 

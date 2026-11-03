@@ -45,6 +45,10 @@ Vector2 measureText(const char* text, float size);
 // 一个物理像素对应的逻辑宽度，用于绘制真正的"细线"
 float hairline();
 
+// 常用图形
+void drawArrow(Vector2 from, Vector2 to, float thickness, Color color, float headSize = 9.0f);
+void drawDashedLine(Vector2 from, Vector2 to, float thickness, Color color, float dash = 6.0f, float gap = 4.0f);
+
 class Demo {
 public:
     virtual ~Demo() = default;
@@ -56,6 +60,8 @@ public:
     virtual void update() {}
     // 绘制当前状态（已处于 BeginDrawing/EndDrawing 之间，坐标为逻辑坐标）
     virtual void draw() const = 0;
+    // 画布内的控件（按钮、滑块等，见 ui.h），在 draw() 之后调用
+    virtual void drawUi() {}
     // 一行状态文字，显示在网页工具栏 / 桌面提示栏，如 "expanded 12 · frontier 4"
     virtual std::string status() const { return {}; }
 };
@@ -71,6 +77,9 @@ struct DemoConfig {
 // 当用户修改了问题本身（比如画墙、拖动起点），演示调用此函数：
 // 算法会被重置；如果之前已经运行结束，则立即重新跑完，让结果"实时"跟随编辑。
 void notifyProblemChanged();
+
+// 运行中修改"1x 速度下每秒步数"，例如让一步对应模拟帧率下的一帧
+void setStepsPerSecond(float stepsPerSecond);
 
 int runDemo(Demo& demo, const DemoConfig& config);
 

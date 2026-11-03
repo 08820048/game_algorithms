@@ -1,0 +1,128 @@
+---
+title: 向量与矩阵：点积、叉积在游戏里的用途
+description: 目标在前面还是后面？在左边还是右边？在不在视野里？这些问题都不需要三角函数，一次点积或叉积就能回答。
+sidebar:
+  order: 2
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Demo from '../../../components/Demo.astro';
+import CppSnippet from '../../../components/CppSnippet.astro';
+
+## 问题：守卫看见你了吗？
+
+做一个潜行游戏，守卫站在走廊里，朝某个方向张望。每一帧都要回答：
+
+- 玩家在守卫**前面**还是**后面**？（背刺判定）
+- 在守卫的**左边**还是**右边**？（守卫该往哪边转头）
+- 在不在守卫 90° 的**视野锥**里？
+
+新手的第一反应往往是 `atan2` 算出两个角度再相减，然后处理 359° 和 1° 之间的环绕问题。其实这些问题都有更简单、更快的答案：**点积和叉积**。
+
+## 先约定坐标系
+
+本系列所有代码都使用屏幕坐标：**x 向右，y 向下**。这会影响叉积"左右"的结论，后面会专门说明。
+
+一个二维向量只需要两个 `float`，配上常用运算符：
+
+<CppSnippet file="common/vec2.h" region="vec2" />
+
+## 点积：前后与投影
+
+<CppSnippet file="common/vec2.h" region="dot-cross" />
+
+点积的几何意义是 `dot(a, b) = |a|·|b|·cosθ`，θ 是两个向量的夹角。我们不关心具体数值时，只看**符号**就够了：
+
+| dot(a, b) | 夹角 θ | 含义 |
+|---|---|---|
+| 大于 0 | 小于 90° | 大致同向：目标在前方 |
+| 等于 0 | 等于 90° | 垂直：目标在正侧面 |
+| 小于 0 | 大于 90° | 大致反向：目标在后方 |
+
+<CppSnippet file="foundations/vectors/vision.h" region="in-front" />
+
+如果 `a` 是单位向量，`dot(a, b)` 还恰好等于 **b 在 a 方向上的投影长度**，也就是"沿着我面朝的方向，目标有多远"。演示里那条赭黄色的线段，长度就是这个点积。
+
+## 叉积：左还是右
+
+二维叉积 `cross(a, b) = |a|·|b|·sinθ`，它是一个**有符号**的数，符号告诉你 b 在 a 的哪一侧：
+
+<CppSnippet file="foundations/vectors/vision.h" region="side" />
+
+<Aside type="caution" title="y 轴朝下时，左右是反的">
+数学课本里 y 轴朝上，`cross > 0` 表示 b 在 a 的**左边**（逆时针方向）。屏幕坐标 y 轴朝下，整个画面上下翻转，`cross > 0` 就变成了**右边**。换引擎、换坐标系时，这是最容易出错的地方。
+</Aside>
+
+## 亲手试一试
+
+<Demo name="vectors" title="点积、叉积与视野锥" label="图 0.2" caption="拖动红点（玩家）、黑点（守卫）或守卫前方的箭头。播放时守卫会左右扫视。左下角实时显示点积、叉积和局部坐标。" />
+
+几个值得做的小实验：
+
+1. 把玩家拖到守卫正侧面，`dot` 接近 0；拖到身后，`dot` 变成负数，赭黄线段指向背后。
+2. 让玩家沿着守卫的朝向线来回穿过，观察 `cross` 的符号翻转，以及 `left` / `right` 的切换。
+3. 调小 `fov`，再把玩家放在视野边缘附近，看 `can see` 何时变化。
+4. 对比 `local` 的两个分量和 `dot`、`cross`，你会发现它们是同一组数字（下文解释）。
+
+## 视野锥：不用 acos
+
+判断"夹角是否小于半视角"，直觉写法是 `acos(dot(f, normalize(to))) < halfAngle`。但 `acos` 慢，还要先归一化。两边同时取余弦，再乘以 `|to|`，就能变成一次乘法比较：
+
+<CppSnippet file="foundations/vectors/vision.h" region="vision-cone" mark="dot(cone.facing, to) >= std::cos(cone.halfAngle) * std::sqrt(d2)" />
+
+实际项目中，`cos(halfAngle)` 可以在视野参数变化时预先算好；距离比较也用平方长度，省掉开方：
+
+<CppSnippet file="common/vec2.h" region="length" />
+
+## 矩阵：换一个视角看世界
+
+旋转一个向量可以直接用三角函数：
+
+<CppSnippet file="common/vec2.h" region="rotate" />
+
+但当我们需要在"世界坐标"和"某个物体的局部坐标"之间来回转换时，矩阵是更好的工具。理解 2×2 旋转矩阵只需要一句话：**矩阵的两列，就是旋转之后的 x 轴和 y 轴**。
+
+<CppSnippet file="foundations/vectors/transform.h" region="mat2" />
+
+物体的变换 = 旋转 + 平移。把局部坐标转到世界坐标，就是先旋转、再平移；反过来则先平移回去、再反向旋转。旋转矩阵的各列互相垂直且长度为 1，所以它的逆矩阵就是转置：
+
+<CppSnippet file="foundations/vectors/transform.h" region="transform" />
+
+把转置矩阵乘以向量展开来看，其实就是**在"前方"和"右方"两个轴上各做一次点积**。局部坐标的 x 分量就是 `dot(to, forward)`，y 分量就是 `dot(to, right)`。点积和矩阵其实是同一件事：
+
+<CppSnippet file="foundations/vectors/transform.h" region="to-local-dot" />
+
+## 投影与反射
+
+另外两个高频操作：把一个向量投影到某个方向上（例如把速度分解为沿墙面和垂直墙面的部分），以及沿法线反射（子弹弹墙、台球撞库）：
+
+<CppSnippet file="common/vec2.h" region="project-reflect" />
+
+## 常见陷阱
+
+| 问题 | 原因 | 解决 |
+|---|---|---|
+| 结果出现 NaN，物体瞬移消失 | 归一化了零向量（除以 0） | `normalized` 对极短向量返回零向量，调用方再做判断 |
+| 视野判断时灵时不灵 | 朝向向量没有归一化，点积被长度放大 | 存储朝向时就保证是单位向量 |
+| 左右判断恰好相反 | 坐标系 y 轴方向和公式假设不一致 | 写单元测试，用一个确定的例子验证 |
+| 角度插值、比较出错 | 混用了角度和弧度，或没处理 ±180° 环绕 | 内部一律用弧度；能用向量就别用角度 |
+| 距离比较拖慢性能 | 大量调用 `sqrt` | 比较距离时用 `lengthSq` |
+
+## 在游戏中的应用
+
+- **背刺判定**：攻击者的朝向与受害者的朝向点积大于某个阈值（大致同向），说明是从背后出手。
+- **转向决策**：AI 需要转向目标时，用叉积的符号决定往左转还是往右转，不需要算角度。
+- **光照**：漫反射亮度正比于 `dot(法线, 光线方向)`，这是几乎所有着色器的第一行代码。
+- **点在直线的哪一侧**：`cross(b - a, p - a)` 的符号。三角形内部判定、多边形凸性检查、碰撞检测都会用到（见第二卷）。
+- **三维中**：点积的含义完全一样；叉积则得到一个同时垂直于两个向量的新向量，是计算法线和构建坐标系的基础。
+
+## 练习
+
+1. 实现 `bool isBehind(Vec2 victimFacing, Vec2 attackerFacing, float toleranceDeg)`，用于背刺判定。
+2. 给视野锥加上"近处 360° 感知"：玩家贴得足够近时，即使在背后也会被发现。
+3. 用叉积判断三个点 a、b、c 是顺时针还是逆时针排列。在 y 朝下的屏幕坐标里，结论又是什么？
+
+## 延伸阅读
+
+- 3Blue1Brown，[线性代数的本质](https://www.3blue1brown.com/topics/linear-algebra)：用动画建立矩阵和点积的直觉
+- Fletcher Dunn、Ian Parberry，《3D 数学基础：图形和游戏开发》

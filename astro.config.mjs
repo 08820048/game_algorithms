@@ -60,6 +60,7 @@ export default defineConfig({
 			lastUpdated: true,
 			sidebar: [
 				{ label: '导读', items: [{ autogenerate: { directory: 'guide' } }] },
+				{ label: '序 · 基础工具', items: [{ autogenerate: { directory: 'foundations' } }] },
 				{ label: 'I · 寻路', items: [{ autogenerate: { directory: 'pathfinding' } }] },
 			],
 		}),

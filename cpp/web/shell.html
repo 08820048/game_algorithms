@@ -26,7 +26,7 @@
 
     #toolbar { display: flex; align-items: stretch; border-top: 1px solid var(--ink); min-height: 40px; }
     .group { display: flex; align-items: stretch; }
-    button { font: inherit; color: var(--ink); background: transparent; border: 0;
+    button { flex-shrink: 0; white-space: nowrap; font: inherit; color: var(--ink); background: transparent; border: 0;
       border-right: 1px solid var(--rule); padding: 0 14px; cursor: pointer;
       display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.04em; }
     button:hover:not(:disabled) { background: var(--hover); }
@@ -39,7 +39,7 @@
       border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
     kbd { font: inherit; color: var(--muted); }
 
-    .speed { display: flex; align-items: center; gap: 10px; padding: 0 14px; border-right: 1px solid var(--rule);
+    .speed { flex-shrink: 0; white-space: nowrap; display: flex; align-items: center; gap: 10px; padding: 0 14px; border-right: 1px solid var(--rule);
       color: var(--muted); }
     input[type="range"] { -webkit-appearance: none; appearance: none; width: 96px; height: 16px; background: transparent; }
     input[type="range"]::-webkit-slider-runnable-track { height: 1px; background: var(--ink); }
@@ -49,8 +49,9 @@
     input[type="range"]::-moz-range-thumb { width: 9px; height: 9px; background: var(--vermilion); border: 0; border-radius: 0; }
     #speedValue { color: var(--ink); font-variant-numeric: tabular-nums; min-width: 3.5em; }
 
-    #status { margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 0 14px;
-      color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
+    #status { margin-left: auto; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 0 14px;
+      color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    #status .text { overflow: hidden; text-overflow: ellipsis; }
     #status .dot { width: 6px; height: 6px; background: var(--muted); flex-shrink: 0; }
     #status[data-state="playing"] .dot { background: var(--vermilion); }
     #status[data-state="finished"] .dot { background: var(--ink); }

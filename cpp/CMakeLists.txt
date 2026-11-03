@@ -34,7 +34,7 @@ file(WRITE "${CMAKE_BINARY_DIR}/generated/ga_font_data.h"
   "#pragma once\n// 由 CMake 生成，请勿手动编辑\nstatic const unsigned char kGaFontData[] = {${GA_FONT_BYTES}};\n")
 
 # 演示公共框架
-add_library(ga_demo STATIC common/demo.cpp)
+add_library(ga_demo STATIC common/demo.cpp common/ui.cpp)
 target_include_directories(ga_demo PUBLIC common PRIVATE "${CMAKE_BINARY_DIR}/generated")
 target_link_libraries(ga_demo PUBLIC raylib)
 
@@ -72,6 +72,22 @@ function(add_algo_test name)
     add_test(NAME ${name} COMMAND ${name})
   endif()
 endfunction()
+
+# ---------------------------------------------------------------------------
+# 序 · 基础工具
+# ---------------------------------------------------------------------------
+add_demo(game_loop foundations/game_loop/demo.cpp)
+add_algo_test(fixed_timestep_test foundations/game_loop/fixed_timestep_test.cpp)
+
+add_demo(vectors foundations/vectors/demo.cpp)
+add_algo_test(vectors_test foundations/vectors/vectors_test.cpp)
+
+add_demo(easing foundations/interpolation/easing_demo.cpp)
+add_demo(follow foundations/interpolation/follow_demo.cpp)
+add_algo_test(interpolation_test foundations/interpolation/interpolation_test.cpp)
+
+add_demo(random foundations/random/demo.cpp)
+add_algo_test(random_test foundations/random/random_test.cpp)
 
 # ---------------------------------------------------------------------------
 # 模块一 · 寻路

@@ -1,0 +1,117 @@
+---
+title: 插值与缓动：Lerp、Slerp、Easing、平滑阻尼
+description: 让数值“流动”而不是“跳变”，是游戏手感的一大来源。这一章从 lerp 讲起，到缓动函数，再到一个流传甚广却依赖帧率的写法，以及它的正确版本。
+sidebar:
+  order: 3
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Demo from '../../../components/Demo.astro';
+import CppSnippet from '../../../components/CppSnippet.astro';
+
+## 问题：为什么画面看起来很"硬"？
+
+血量从 100 一下子变成 60，血条瞬间缩短；UI 面板凭空出现；相机死死钉在角色身上，角色一动画面就跟着抖。这些画面没有 bug，但看起来廉价。
+
+好的手感往往来自一个原则：**数值不要瞬间跳到目标，而要用一段时间"流"过去**。实现这一点的工具，就是插值。
+
+## 线性插值：一切的起点
+
+<CppSnippet file="foundations/interpolation/interpolation.h" region="lerp" />
+
+三个函数是一组：
+
+- `lerp(a, b, t)`：给定比例，求数值。`t = 0.25` 就是从 a 走到 b 的四分之一处
+- `inverseLerp(a, b, v)`：给定数值，求比例。例如当前血量占最大血量的多少
+- `remap`：前两者的组合，把一个区间映射到另一个区间。血量 → 血条宽度、距离 → 音量，都是它
+
+## 缓动函数：控制"怎么走过去"
+
+`lerp` 是匀速的。现实中的运动很少匀速：物体会加速起步、减速停下，有时还会冲过头再弹回来。**缓动函数**（easing function）就是在把 `t` 交给 `lerp` 之前，先用一条曲线重新映射它：
+
+<CppSnippet file="foundations/interpolation/interpolation.h" region="easing" />
+
+所有缓动函数都满足 `f(0) = 0`、`f(1) = 1`，区别只在中间的形状。命名规则很简单：**in** 表示开头慢（加速），**out** 表示结尾慢（减速），**inOut** 两头都慢。
+
+<Demo name="easing" title="缓动函数" label="图 0.3" caption="左侧切换缓动函数。中间是曲线（虚线为线性参考），右侧是三种常见用法：位移、缩放弹出、进度条。outBack 和 outElastic 会冲过终点。" />
+
+选择缓动函数的经验：
+
+| 场景 | 推荐 | 原因 |
+|---|---|---|
+| UI 元素进入画面 | `outCubic`、`outBack` | 快速出现、柔和停下，`outBack` 带一点俏皮的回弹 |
+| UI 元素离开画面 | `inCubic` | 缓慢启动、加速离开，不抢注意力 |
+| 来回循环的动画 | `inOutSine` | 两端都平滑，没有突兀的转折 |
+| 物体落地 | `outBounce` | 模拟弹跳，但只适合风格化的表现 |
+| 数值变化（金币、分数） | `outQuad` | 先快后慢，读数最后稳定下来 |
+
+## 角度与方向的插值
+
+直接对角度做 `lerp` 有个陷阱：从 170° 转到 -170°，`lerp` 会绕远路转 340°，而不是走近路转 20°。正确做法是先把差值规整到 (-π, π]：
+
+<CppSnippet file="foundations/interpolation/interpolation.h" region="lerp-angle" />
+
+`slerp`（球面线性插值）在两个单位向量之间**匀速转动**，而不是沿着弦直线移动。在三维中，旋转用四元数表示，对应的就是四元数的 slerp，这是骨骼动画混合的基础。
+
+## 跟随：一个流传甚广的写法
+
+相机跟随、血条追赶、鼠标拖尾，网上最常见的写法是这样一行：
+
+<CppSnippet file="foundations/interpolation/interpolation.h" region="naive-follow" />
+
+每帧向目标靠近 10%，效果很顺滑。**但它和帧率绑定**：60 fps 时一秒钟靠近 60 次，144 fps 时靠近 144 次，跟随速度快了一倍多。
+
+推导一下就能修好。每帧剩下 90% 的距离，`n` 帧之后剩下 `0.9ⁿ`。按时间而不是帧数来算，60 fps 下经过 `t` 秒剩下 `0.9^(60t)`，可以写成 `e^(-k·t)`，其中 `k = -60·ln(0.9) ≈ 6.32`。于是：
+
+<CppSnippet file="foundations/interpolation/interpolation.h" region="exp-decay" />
+
+这就是**指数衰减**（exponential decay）：剩余距离每秒按固定比例缩小，与帧率无关。`decay` 越大跟得越紧。
+
+<Demo name="follow" title="平滑跟随" label="图 0.4" caption="红：每帧 lerp 0.1；黑：指数衰减；黄：smoothDamp。60 fps 时红黑完全重合。拖动 fps 滑块，观察红点的 lag 如何变化；按住鼠标可以拖动目标。" />
+
+几个值得做的小实验：
+
+1. 在 60 fps 下，红点和黑点完全重合，`lag` 数值一致。这是因为 `decay` 正是按 60 fps 等价换算出来的。
+2. 把 fps 拉到 144，红点明显跟得更紧；降到 15，红点远远落在后面。黑点在任何帧率下都不变。
+3. 按住鼠标拖动目标，然后突然停下。比较黑点和黄点的启动和停止过程：黑点一开始就全速冲出，黄点有一个加速的过程。
+
+## 平滑阻尼：带速度的跟随
+
+指数衰减有个特点：目标突然移动时，跟随者**瞬间**获得很大的速度。对相机来说这会造成"顿挫感"。更好的模型是一个**临界阻尼弹簧**：跟随者有自己的速度，被弹簧拉向目标，阻尼刚好大到不会过冲。
+
+<CppSnippet file="foundations/interpolation/interpolation.h" region="smooth-damp" />
+
+`velocity` 需要调用方保存在跟随者身上。`smoothTime` 大致等于追上目标所需的时间。Unity 的 `Mathf.SmoothDamp` 用的就是这个公式。
+
+<Aside type="tip" title="三种跟随怎么选">
+数值类（血条、分数）用指数衰减就够了；相机、准星这类需要"重量感"的用 smoothDamp；固定时长、需要精确控制曲线的动画用缓动函数 + tween。
+</Aside>
+
+## 常见陷阱
+
+| 问题 | 原因 | 解决 |
+|---|---|---|
+| 不同帧率下跟随速度不同 | `lerp(a, b, 常数)` 每帧调用 | 改用 `expDecay` 或 `smoothDamp` |
+| 永远到不了目标 | 指数衰减只会无限接近 | 距离小于阈值时直接吸附到目标 |
+| 角色转身绕远路 | 对角度直接 `lerp` | 用 `lerpAngle` 或向量 `slerp` |
+| `t` 超出 [0,1] 后动画失控 | 时间累加超过时长 | `tween` 中先 `clamp01` |
+| outBack 让数值短暂越界 | 过冲是设计如此 | 血量、透明度等有上下限的值要再 clamp 一次 |
+
+## 在游戏中的应用
+
+- **UI 动效**：几乎所有面板的出现、消失、按钮的按下反馈都是 tween + 缓动函数。
+- **相机**：跟随用 smoothDamp，镜头切换用 `inOutCubic` 的 tween。
+- **"受伤血条"**：红色血条立即减少，后面的白色血条用指数衰减慢慢追上，玩家一眼就能看出这次掉了多少血。
+- **动画混合**：两个动画切换时，用 `smoothstep` 控制权重，避免姿势突变。
+
+## 练习
+
+1. 实现 `outQuart`、`inOutBack`，并验证它们的端点值。
+2. 给 `expDecay` 加一个"吸附阈值"参数：距离小于阈值时直接返回目标值。
+3. 用指数衰减实现"受伤血条"：红条立即变化，白条延迟 0.3 秒后再开始追赶。
+
+## 延伸阅读
+
+- [easings.net](https://easings.net/)：常见缓动函数的曲线速查
+- Robert Penner，*Programming Macromedia Flash MX* 第 7 章：今天各种缓动库的源头
+- Thomas Lowe，*Critically Damped Ease-In/Ease-Out Smoothing*，收录于 *Game Programming Gems 4*：smoothDamp 公式的出处

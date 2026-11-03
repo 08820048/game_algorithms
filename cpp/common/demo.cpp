@@ -5,6 +5,8 @@
 #include <cstdio>
 
 #include "ga_font_data.h"
+#include "rlgl.h"
+#include "ui.h"
 
 #if defined(PLATFORM_WEB)
 #include <emscripten/emscripten.h>
@@ -78,12 +80,13 @@ Runner g;
 void loadFont() {
     // 字体按物理像素加载，保证高分屏下文字清晰
     int baseSize = static_cast<int>(std::ceil(28.0f * g.scale));
-    int codepoints[96 + 3];
+    // ASCII + 少量符号（需与 assets 中字体子集的字符范围一致）
+    static constexpr int kExtra[] = {0x00B0, 0x00B7, 0x00D7, 0x2026, 0x2190, 0x2191, 0x2192, 0x2193,
+                                     0x2248, 0x2264, 0x2265};
+    int codepoints[95 + sizeof kExtra / sizeof kExtra[0]];
     int n = 0;
     for (int c = 32; c < 127; ++c) codepoints[n++] = c;
-    codepoints[n++] = 0x00D7;  // ×
-    codepoints[n++] = 0x00B7;  // ·
-    codepoints[n++] = 0x2192;  // →
+    for (int c : kExtra) codepoints[n++] = c;
     g.font = LoadFontFromMemory(".ttf", kGaFontData, static_cast<int>(sizeof kGaFontData), baseSize,
                                 codepoints, n);
     SetTextureFilter(g.font.texture, TEXTURE_FILTER_BILINEAR);
@@ -159,6 +162,7 @@ void drawDesktopHud() {
 #endif
 
 void frame() {
+    ui::detail::beginFrame();
     g.demo->update();
 
 #if !defined(PLATFORM_WEB)
@@ -181,10 +185,20 @@ void frame() {
     camera.zoom = g.scale;
     BeginMode2D(camera);
     g.demo->draw();
+    g.demo->drawUi();
 #if !defined(PLATFORM_WEB)
     drawDesktopHud();
 #endif
     EndMode2D();
+#if defined(PLATFORM_WEB)
+    // WebGL 画布默认带 alpha 通道：半透明绘制会让网页背景透出来，颜色发白。
+    // 最后只写 alpha 通道，把整张画布的 alpha 置为 1
+    rlDrawRenderBatchActive();
+    rlColorMask(false, false, false, true);
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+    rlDrawRenderBatchActive();
+    rlColorMask(true, true, true, true);
+#endif
     EndDrawing();
 
     notifyHost();
@@ -197,7 +211,11 @@ bool isDarkTheme() { return g.dark; }
 
 float hairline() { return 1.0f / g.scale; }
 
+// 画布在文章里通常会被缩小到 90% 左右显示，统一放大文字以保证可读性
+constexpr float kTextScale = 1.15f;
+
 void drawText(const char* text, Vector2 pos, float size, Color color) {
+    size *= kTextScale;
     if (g.fontLoaded) {
         DrawTextEx(g.font, text, pos, size, 0.0f, color);
     } else {
@@ -206,6 +224,7 @@ void drawText(const char* text, Vector2 pos, float size, Color color) {
 }
 
 Vector2 measureText(const char* text, float size) {
+    size *= kTextScale;
     if (g.fontLoaded) return MeasureTextEx(g.font, text, size, 0.0f);
     return {static_cast<float>(MeasureText(text, static_cast<int>(size))), size};
 }
@@ -216,6 +235,33 @@ void drawTextCentered(const char* text, Vector2 center, float size, Color color)
                     std::round((center.y - m.y * 0.5f) * g.scale) / g.scale},
              size, color);
 }
+
+void drawArrow(Vector2 from, Vector2 to, float thickness, Color color, float headSize) {
+    Vector2 d{to.x - from.x, to.y - from.y};
+    float len = std::sqrt(d.x * d.x + d.y * d.y);
+    if (len < 1e-3f) return;
+    Vector2 u{d.x / len, d.y / len};
+    float head = std::min(headSize, len * 0.6f);
+    Vector2 base{to.x - u.x * head, to.y - u.y * head};
+    DrawLineEx(from, base, thickness, color);
+    Vector2 n{-u.y, u.x};
+    float w = head * 0.45f;
+    DrawTriangle(to, {base.x - n.x * w, base.y - n.y * w}, {base.x + n.x * w, base.y + n.y * w}, color);
+    DrawTriangle(to, {base.x + n.x * w, base.y + n.y * w}, {base.x - n.x * w, base.y - n.y * w}, color);
+}
+
+void drawDashedLine(Vector2 from, Vector2 to, float thickness, Color color, float dash, float gap) {
+    Vector2 d{to.x - from.x, to.y - from.y};
+    float len = std::sqrt(d.x * d.x + d.y * d.y);
+    if (len < 1e-3f) return;
+    Vector2 u{d.x / len, d.y / len};
+    for (float s = 0; s < len; s += dash + gap) {
+        float e = std::min(s + dash, len);
+        DrawLineEx({from.x + u.x * s, from.y + u.y * s}, {from.x + u.x * e, from.y + u.y * e}, thickness, color);
+    }
+}
+
+void setStepsPerSecond(float stepsPerSecond) { g.config.stepsPerSecond = std::max(stepsPerSecond, 0.1f); }
 
 void notifyProblemChanged() {
     bool wasFinished = g.finished;

@@ -26,10 +26,10 @@ export const parts: Part[] = [
 		title: '基础工具',
 		en: 'Foundations',
 		chapters: [
-			planned('0.1', '游戏循环与固定时间步长'),
-			planned('0.2', '向量与矩阵：点积、叉积在游戏里的用途'),
-			planned('0.3', '插值与缓动：Lerp、Slerp、Easing、平滑阻尼'),
-			planned('0.4', '游戏中的随机数：洗牌、加权随机与伪随机分布'),
+			{ no: '0.1', title: '游戏循环与固定时间步长', href: '/foundations/game-loop/', status: 'published' },
+			{ no: '0.2', title: '向量与矩阵：点积、叉积在游戏里的用途', href: '/foundations/vectors/', status: 'published' },
+			{ no: '0.3', title: '插值与缓动：Lerp、Slerp、Easing、平滑阻尼', href: '/foundations/interpolation/', status: 'published' },
+			{ no: '0.4', title: '游戏中的随机数：洗牌、加权随机与伪随机分布', href: '/foundations/random/', status: 'published' },
 		],
 	},
 	{

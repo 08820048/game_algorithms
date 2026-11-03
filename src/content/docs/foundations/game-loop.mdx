@@ -1,0 +1,117 @@
+---
+title: 游戏循环与固定时间步长
+description: 同一个跳跃，在 30 帧和 144 帧的电脑上高度不一样？问题出在游戏循环。这一章讲清楚“蓄水池”式的固定步长与渲染插值。
+sidebar:
+  order: 1
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Demo from '../../../components/Demo.astro';
+import CppSnippet from '../../../components/CppSnippet.astro';
+
+## 问题：为什么高帧率玩家跳得更低？
+
+几乎所有游戏都运行在这样一个循环里：
+
+```cpp
+while (running) {
+    processInput();
+    update();   // 推进游戏世界
+    render();   // 画出来
+}
+```
+
+问题在于：**一次循环到底代表多长时间？** 早期的主机游戏默认"一帧 = 1/60 秒"，换到更快的机器上，整个游戏就会快进。后来大家学会了乘上 `deltaTime`，速度问题看似解决了，却又冒出一批更隐蔽的 bug：
+
+- 同样的跳跃，在低帧率电脑上跳得更高，刚好能跳上某个平台
+- 掉帧卡顿一下，角色直接穿过了薄墙
+- 录像回放和原始对局对不上，联机双方算出的结果不同
+
+这些问题的根源都一样：**物理模拟的结果依赖于帧率**。这一章介绍游戏开发里最经典的解法——固定时间步长。
+
+## 三种循环写法
+
+### 写法一：可变时间步长
+
+最直观的做法是把"这一帧过了多久"直接交给物理：
+
+<CppSnippet file="foundations/game_loop/fixed_timestep.h" region="variable-loop" />
+
+其中积分函数是最简单的显式欧拉法：
+
+<CppSnippet file="foundations/game_loop/fixed_timestep.h" region="body" />
+
+数值积分本质上是在用折线逼近曲线，**步子越大，误差越大**。帧率低时 `dt` 大，跳跃的最高点就会明显偏离理论值；而且每台机器、每次运行的帧时间序列都不同，结果永远无法精确复现。
+
+### 写法二：固定时间步长
+
+换个思路：物理永远以固定的 `dt`（比如 1/60 秒）推进，**和渲染帧率解耦**。真实流逝的时间先存进一个"蓄水池"（accumulator），每攒够一个 `dt` 就推进一步：
+
+<CppSnippet file="foundations/game_loop/fixed_timestep.h" region="fixed-timestep" mark={['accumulator_ += std::min(frameTime, maxFrameTime_);', 'while (accumulator_ >= dt_) {']} />
+
+- 帧率高于 60 时，有的帧一步都不走，时间留在池子里
+- 帧率低于 60 时，一帧里会走好几步把时间补上
+- 无论帧率如何切分，**物理看到的永远是同一串固定的 dt**，结果逐位相同
+
+`maxFrameTime` 用来防止**死亡螺旋**（spiral of death）：如果某一帧卡了 2 秒，就要一口气补 120 步物理，补的过程又会让下一帧更慢……所以要给单帧补偿设一个上限，宁可让游戏"慢动作"一下，也不要彻底卡死。
+
+### 写法三：固定步长 + 插值
+
+固定步长还剩一个问题：渲染时刻和物理时刻对不上。比如 40 fps 配 60 Hz 物理，每帧交替走 1 步、2 步，画面上物体的移动距离忽大忽小，看起来在抖。
+
+解决办法是利用池子里剩下的那点时间。`alpha = 剩余时间 / dt` 表示当前时刻落在"上一步"和"这一步"之间的哪个位置，渲染时据此插值：
+
+<CppSnippet file="foundations/game_loop/fixed_timestep.h" region="interpolate" />
+
+代价是画面会比物理状态**晚最多一个 dt**（1/60 秒约 16.7 毫秒），绝大多数游戏都感觉不到。
+
+## 亲手试一试
+
+<Demo name="game_loop" title="游戏循环：三种写法对比" label="图 0.1" caption="三条泳道是同一个跳跃，分别用三种循环写法。轨迹上的每个点代表一次渲染。拖动 fps 滑块，或打开 jitter 模拟帧时间抖动。" />
+
+几个值得做的小实验：
+
+1. 把 **fps 拖到 10~15**。A 道的 `peak` 变红，跳得明显比虚线（理论最高点）更高；B、C 两道纹丝不动。
+2. 把 **fps 设为 40**，然后暂停、单步观察。B 道的 `steps/frame` 在 1 和 2 之间交替，轨迹点间距一疏一密；C 道的点均匀分布。
+3. 把 **fps 拉到 144**。B 道很多帧一步都不走（`steps/frame 0`），同一个位置被画了好几次；C 道依然平滑。
+4. 打开 **jitter**，帧时间在 0.4~1.6 倍之间随机波动，这更接近真实设备上的情况。
+
+## 完整的循环骨架
+
+把三部分组合起来，就是一个可以直接套用的游戏循环：
+
+<CppSnippet file="foundations/game_loop/fixed_timestep.h" region="game-loop" />
+
+<Aside type="tip" title="插值需要两份状态">
+要做插值，每个需要平滑显示的物体都得保存"上一步"和"这一步"两份状态。常见做法是在每次 `update` 开头把当前状态复制到 `previous`。只对渲染相关的数据（位置、朝向）这样做就够了，游戏逻辑永远只读最新状态。
+</Aside>
+
+## 复杂度与常见陷阱
+
+每帧的物理更新次数大约是 `frameTime / dt`，平均来看与帧率无关。固定步长唯一的额外开销是插值，可以忽略不计。
+
+| 问题 | 原因 | 解决 |
+|---|---|---|
+| 累计时间越来越不准 | 用 `float` 存累计时间，几小时后精度不足 | 时间相关的累加一律用 `double` |
+| 卡顿后游戏长时间无响应 | 死亡螺旋：补偿步数越来越多 | 限制单帧最大补偿时间 |
+| 帧时间恰好是 dt 的整数倍时偶尔少走一步 | 浮点误差让 `accumulator` 比 `dt` 小一点点 | 正常现象，下一帧会补上；不要用 `==` 比较时间 |
+| 按键偶尔"丢失" | 输入在 `update` 里读取，而这一帧 `update` 没执行 | 在循环开头收集输入并缓存，`update` 消费缓存 |
+| 插值后碰撞检测出错 | 在插值出来的位置上做游戏逻辑 | 插值结果只用于渲染 |
+
+## 在游戏中的应用
+
+- **Unity** 的 `FixedUpdate` 和 `Time.fixedDeltaTime`、**Unreal** 的物理子步（substepping），都是这套思路的工程化版本。Unity 的刚体插值选项（Interpolate）对应本章的写法三。
+- **帧同步联机**（lockstep）要求所有客户端算出完全相同的结果，固定步长是前提，再配合定点数做到跨平台确定性（见第六卷）。
+- **录像回放**：只要记录每一步的输入，用固定步长重放就能逐帧复现整局游戏。
+- 物理步长不一定是 60 Hz。格斗、竞速游戏常用 120 Hz 甚至更高，策略游戏的逻辑帧可能只有 10~20 Hz。
+
+## 练习
+
+1. 把 `integrate` 改成半隐式欧拉（先更新速度，再用新速度更新位置），再用可变步长跑一遍。跳跃高度还随帧率变化吗？偏高还是偏低？
+2. 除了插值，还有一种做法叫**外推**（extrapolation）：用当前状态加上速度乘以 `alpha·dt` 预测画面。它有什么优点和风险？
+3. 在演示中打开 jitter，把 fps 调到 15。B 道和 C 道的轨迹点分布有什么区别？为什么？
+
+## 延伸阅读
+
+- Glenn Fiedler，[Fix Your Timestep!](https://gafferongames.com/post/fix_your_timestep/)：本章内容的经典出处
+- Robert Nystrom，[《游戏编程模式》Game Loop 一章](https://gameprogrammingpatterns.com/game-loop.html)
