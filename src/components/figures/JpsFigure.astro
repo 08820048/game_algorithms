@@ -1,0 +1,197 @@
+---
+// JPS 的两个核心概念：
+//   左：对称路径 —— 空地上代价相同的路径有很多条，A* 会把它们都探索一遍
+//   右：强迫邻居 —— 横走时，身后的墙角让上方格子"只能经过 x 才能最快到达"
+interface Props {
+	label?: string;
+	caption?: string;
+}
+const { label = '图', caption } = Astro.props;
+
+const S = 40; // 格子边长
+const c = (i: number) => i * S + S / 2;
+
+// 左图：6 × 4，从 A(0,3) 到 B(5,0)，三条代价相同的路径
+const symCols = 6;
+const symRows = 4;
+const symPaths: { pts: [number, number][]; accent?: boolean }[] = [
+	{ pts: [[0, 3], [1, 2], [2, 1], [3, 0], [4, 0], [5, 0]], accent: true },
+	{ pts: [[0, 3], [1, 3], [2, 3], [3, 2], [4, 1], [5, 0]] },
+	{ pts: [[0, 3], [1, 2], [2, 2], [3, 1], [4, 1], [5, 0]] },
+];
+const poly = (pts: [number, number][]) => pts.map(([x, y]) => `${c(x)},${c(y)}`).join(' ');
+
+// 右图：5 × 3，沿中间一行向右；p 上方是墙
+const fCols = 5;
+const fRows = 3;
+const fx = 300; // 右图在 viewBox 中的横向偏移
+---
+
+<figure class="jps-figure not-content">
+	<svg viewBox="0 0 520 220" role="img" aria-label="对称路径与强迫邻居">
+		<g transform="translate(10 30)">
+			<text x={(symCols * S) / 2} y="-12" class="title">对称路径</text>
+			{
+				Array.from({ length: symRows }, (_, y) =>
+					Array.from({ length: symCols }, (_, x) => <rect x={x * S} y={y * S} width={S} height={S} class="cell" />),
+				)
+			}
+			{symPaths.filter((p) => !p.accent).map((p) => <polyline points={poly(p.pts)} class="path" />)}
+			{symPaths.filter((p) => p.accent).map((p) => <polyline points={poly(p.pts)} class="path accent" />)}
+			<circle cx={c(0)} cy={c(3)} r="11" class="dot" />
+			<text x={c(0)} y={c(3) + 4} class="dot-label">A</text>
+			<circle cx={c(5)} cy={c(0)} r="11" class="dot" />
+			<text x={c(5)} y={c(0) + 4} class="dot-label">B</text>
+		</g>
+
+		<g transform={`translate(${fx} 30)`}>
+			<text x={(fCols * S) / 2} y="-12" class="title">强迫邻居</text>
+			{
+				Array.from({ length: fRows }, (_, y) =>
+					Array.from({ length: fCols }, (_, x) => (
+						<rect
+							x={x * S}
+							y={y * S}
+							width={S}
+							height={S}
+							class:list={['cell', { wall: x === 1 && y === 0, forced: x === 2 && y === 0 }]}
+						/>
+					)),
+				)
+			}
+			<line x1={c(0) + 6} y1={c(1)} x2={c(2) - 14} y2={c(1)} class="arrow" marker-end="url(#jps-arrow)" />
+			<line x1={c(2) + 14} y1={c(1)} x2={c(4) - 6} y2={c(1)} class="arrow dim" marker-end="url(#jps-arrow)" />
+			<line x1={c(2)} y1={c(1) - 12} x2={c(2)} y2={c(0) + 10} class="arrow forced" marker-end="url(#jps-arrow-red)" />
+			<line x1={c(1)} y1={c(1)} x2={c(2) - 8} y2={c(0) + 8} class="blocked" />
+			<circle cx={2 * S} cy={S} r="9" class="cross-bg" />
+			<text x={2 * S} y={S + 6} class="cross">×</text>
+			<text x={c(1)} y={c(1) + 16} class="cell-label">p</text>
+			<circle cx={c(2)} cy={c(1)} r="11" class="dot" />
+			<text x={c(2)} y={c(1) + 4} class="dot-label">x</text>
+			<text x={c(2)} y={c(0) + 5} class="cell-label forced-label">n</text>
+		</g>
+
+		<defs>
+			<marker id="jps-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+				<path d="M0,0 L10,5 L0,10 z" class="head" />
+			</marker>
+			<marker id="jps-arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+				<path d="M0,0 L10,5 L0,10 z" class="head red" />
+			</marker>
+		</defs>
+	</svg>
+	{
+		caption && (
+			<figcaption>
+				<span class="label">{label}</span>
+				<span>{caption}</span>
+			</figcaption>
+		)
+	}
+</figure>
+
+<style>
+	.jps-figure {
+		margin: 2rem 0;
+		padding: 1.25rem 1rem 0.75rem;
+		border: 1px solid var(--ga-ink);
+		background: var(--ga-raised);
+	}
+	svg {
+		display: block;
+		width: 100%;
+		max-width: 40rem;
+		margin: 0 auto;
+		font-family: var(--__sl-font-mono);
+	}
+	.title {
+		fill: var(--sl-color-gray-3);
+		font-size: 12px;
+		text-anchor: middle;
+		letter-spacing: 0.08em;
+	}
+	.cell {
+		fill: var(--ga-paper);
+		stroke: var(--ga-grid-line);
+		stroke-width: 1;
+	}
+	.cell.wall {
+		fill: var(--ga-ink);
+	}
+	.cell.forced {
+		fill: color-mix(in srgb, var(--ga-vermilion) 16%, var(--ga-paper));
+		stroke: var(--ga-vermilion);
+	}
+	.path {
+		fill: none;
+		stroke: var(--sl-color-gray-4);
+		stroke-width: 2;
+		stroke-dasharray: 5 4;
+	}
+	.path.accent {
+		stroke: var(--ga-vermilion);
+		stroke-width: 3;
+		stroke-dasharray: none;
+	}
+	.dot {
+		fill: var(--ga-ink);
+	}
+	.dot-label {
+		fill: var(--ga-paper);
+		font-size: 12px;
+		text-anchor: middle;
+	}
+	.cell-label {
+		fill: var(--sl-color-gray-3);
+		font-size: 13px;
+		text-anchor: middle;
+	}
+	.forced-label {
+		fill: var(--ga-vermilion);
+	}
+	.arrow {
+		stroke: var(--ga-ink);
+		stroke-width: 2;
+	}
+	.arrow.dim {
+		stroke: var(--sl-color-gray-4);
+		stroke-dasharray: 4 3;
+	}
+	.arrow.forced {
+		stroke: var(--ga-vermilion);
+	}
+	.blocked {
+		stroke: var(--sl-color-gray-3);
+		stroke-width: 1.5;
+		stroke-dasharray: 4 3;
+	}
+	.cross-bg {
+		fill: var(--ga-raised);
+		stroke: var(--ga-vermilion);
+		stroke-width: 1.2;
+	}
+	.cross {
+		fill: var(--ga-vermilion);
+		font-size: 16px;
+		font-weight: 600;
+		text-anchor: middle;
+	}
+	.head {
+		fill: var(--ga-ink);
+	}
+	.head.red {
+		fill: var(--ga-vermilion);
+	}
+	figcaption {
+		display: flex;
+		gap: 1rem;
+		margin-top: 0.5rem;
+		font-size: 0.875rem;
+		color: var(--sl-color-gray-3);
+	}
+	.label {
+		flex-shrink: 0;
+		font-family: var(--__sl-font-mono);
+		color: var(--ga-vermilion);
+	}
+</style>

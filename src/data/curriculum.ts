@@ -41,7 +41,7 @@ export const parts: Part[] = [
 			{ no: '1.2', title: 'Dijkstra：当每一步的代价不同', href: '/pathfinding/dijkstra/', status: 'published' },
 			{ no: '1.3', title: 'A*：启发函数与 Open / Closed 表', href: '/pathfinding/astar/', status: 'published' },
 			{ no: '1.4', title: 'A* 优化：二叉堆、启发权重与路径平滑', href: '/pathfinding/astar-optimization/', status: 'published' },
-			planned('1.5', 'JPS 跳点搜索'),
+			{ no: '1.5', title: 'JPS 跳点搜索', href: '/pathfinding/jps/', status: 'published' },
 			planned('1.6', '导航网格与漏斗算法'),
 			planned('1.7', '流场寻路：RTS 中的大规模单位移动'),
 			planned('1.8', '分层寻路 HPA*'),

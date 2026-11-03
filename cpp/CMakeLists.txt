@@ -104,3 +104,6 @@ add_algo_test(astar_test pathfinding/astar/astar_test.cpp)
 add_demo(astar_opt pathfinding/astar_opt/demo.cpp)
 add_algo_test(astar_opt_test pathfinding/astar_opt/astar_opt_test.cpp)
 # 性能对比 pathfinding/astar_opt/astar_bench.cpp 不在这里构建，用法见文件开头
+
+add_demo(jps pathfinding/jps/demo.cpp)
+add_algo_test(jps_test pathfinding/jps/jps_test.cpp)

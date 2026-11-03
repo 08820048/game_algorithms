@@ -43,6 +43,9 @@ class Editor {
 public:
     enum class Brush { Wall, Forest, Swamp, Erase };
 
+    // terrain = false：只提供 wall / erase 两种画笔，用于代价统一的网格（如 JPS）
+    explicit Editor(bool terrain = true) : terrain_(terrain), brush_(terrain ? Brush::Swamp : Brush::Wall) {}
+
     // 每帧调用；地图、起点或终点发生变化时返回 true
     bool update(CostGrid& grid, Cell& start, Cell& goal) {
         Vector2 m = GetMousePosition();
@@ -81,6 +84,7 @@ public:
             {Brush::Swamp, "swamp ×6", 88}, {Brush::Erase, "erase", 62},
         };
         for (const Item& it : kItems) {
+            if (!terrain_ && (it.brush == Brush::Forest || it.brush == Brush::Swamp)) continue;
             if (ui::button({x, 13, it.w, 26}, it.label, brush_ == it.brush)) brush_ = it.brush;
             x += it.w + 4;
         }
@@ -102,7 +106,8 @@ private:
         return true;
     }
 
-    Brush brush_ = Brush::Swamp;
+    bool terrain_;
+    Brush brush_;
     Drag drag_ = Drag::None;
     Cell hover_{-1, -1};
 };
