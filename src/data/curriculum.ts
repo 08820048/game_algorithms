@@ -52,7 +52,7 @@ export const parts: Part[] = [
 		title: '碰撞检测与物理',
 		en: 'Collision & Physics',
 		chapters: [
-			planned('2.1', '基础相交测试：AABB、圆与射线'),
+			{ no: '2.1', title: '基础相交测试：AABB、圆与射线', href: '/collision/intersection/', status: 'published' },
 			planned('2.2', '分离轴定理（SAT）'),
 			planned('2.3', 'GJK 与 EPA'),
 			planned('2.4', '宽相检测：均匀网格与空间哈希'),

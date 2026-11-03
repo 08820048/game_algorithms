@@ -117,3 +117,9 @@ add_algo_test(flowfield_test pathfinding/flowfield/flowfield_test.cpp)
 
 add_demo(hpa pathfinding/hpa/demo.cpp)
 add_algo_test(hpa_test pathfinding/hpa/hpa_test.cpp)
+
+# ---------------------------------------------------------------------------
+# 模块二 · 碰撞检测与物理
+# ---------------------------------------------------------------------------
+add_demo(intersect collision/intersect/demo.cpp)
+add_algo_test(intersect_test collision/intersect/intersect_test.cpp)

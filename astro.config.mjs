@@ -62,6 +62,7 @@ export default defineConfig({
 				{ label: '导读', items: [{ autogenerate: { directory: 'guide' } }] },
 				{ label: '序 · 基础工具', items: [{ autogenerate: { directory: 'foundations' } }] },
 				{ label: 'I · 寻路', items: [{ autogenerate: { directory: 'pathfinding' } }] },
+				{ label: 'II · 碰撞检测与物理', items: [{ autogenerate: { directory: 'collision' } }] },
 			],
 		}),
 	],
