@@ -44,7 +44,7 @@ export const parts: Part[] = [
 			{ no: '1.5', title: 'JPS 跳点搜索', href: '/pathfinding/jps/', status: 'published' },
 			{ no: '1.6', title: '导航网格与漏斗算法', href: '/pathfinding/navmesh/', status: 'published' },
 			{ no: '1.7', title: '流场寻路：RTS 中的大规模单位移动', href: '/pathfinding/flow-field/', status: 'published' },
-			planned('1.8', '分层寻路 HPA*'),
+			{ no: '1.8', title: '分层寻路 HPA*', href: '/pathfinding/hpa/', status: 'published' },
 		],
 	},
 	{

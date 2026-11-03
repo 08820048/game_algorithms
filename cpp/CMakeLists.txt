@@ -114,3 +114,6 @@ add_algo_test(navmesh_test pathfinding/navmesh/navmesh_test.cpp)
 add_demo(flowfield pathfinding/flowfield/demo.cpp)
 add_algo_test(flowfield_test pathfinding/flowfield/flowfield_test.cpp)
 # 性能对比 pathfinding/flowfield/flowfield_bench.cpp 同样手动编译
+
+add_demo(hpa pathfinding/hpa/demo.cpp)
+add_algo_test(hpa_test pathfinding/hpa/hpa_test.cpp)
