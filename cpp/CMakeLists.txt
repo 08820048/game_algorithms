@@ -107,3 +107,6 @@ add_algo_test(astar_opt_test pathfinding/astar_opt/astar_opt_test.cpp)
 
 add_demo(jps pathfinding/jps/demo.cpp)
 add_algo_test(jps_test pathfinding/jps/jps_test.cpp)
+
+add_demo(navmesh pathfinding/navmesh/demo.cpp)
+add_algo_test(navmesh_test pathfinding/navmesh/navmesh_test.cpp)
