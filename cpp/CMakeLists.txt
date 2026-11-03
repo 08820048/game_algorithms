@@ -97,3 +97,6 @@ add_algo_test(bfs_test pathfinding/bfs/bfs_test.cpp)
 
 add_demo(dijkstra pathfinding/dijkstra/demo.cpp)
 add_algo_test(dijkstra_test pathfinding/dijkstra/dijkstra_test.cpp)
+
+add_demo(astar pathfinding/astar/demo.cpp)
+add_algo_test(astar_test pathfinding/astar/astar_test.cpp)
