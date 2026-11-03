@@ -110,3 +110,7 @@ add_algo_test(jps_test pathfinding/jps/jps_test.cpp)
 
 add_demo(navmesh pathfinding/navmesh/demo.cpp)
 add_algo_test(navmesh_test pathfinding/navmesh/navmesh_test.cpp)
+
+add_demo(flowfield pathfinding/flowfield/demo.cpp)
+add_algo_test(flowfield_test pathfinding/flowfield/flowfield_test.cpp)
+# 性能对比 pathfinding/flowfield/flowfield_bench.cpp 同样手动编译

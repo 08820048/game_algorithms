@@ -43,7 +43,7 @@ export const parts: Part[] = [
 			{ no: '1.4', title: 'A* 优化：二叉堆、启发权重与路径平滑', href: '/pathfinding/astar-optimization/', status: 'published' },
 			{ no: '1.5', title: 'JPS 跳点搜索', href: '/pathfinding/jps/', status: 'published' },
 			{ no: '1.6', title: '导航网格与漏斗算法', href: '/pathfinding/navmesh/', status: 'published' },
-			planned('1.7', '流场寻路：RTS 中的大规模单位移动'),
+			{ no: '1.7', title: '流场寻路：RTS 中的大规模单位移动', href: '/pathfinding/flow-field/', status: 'published' },
 			planned('1.8', '分层寻路 HPA*'),
 		],
 	},
