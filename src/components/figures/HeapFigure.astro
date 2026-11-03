@@ -1,0 +1,149 @@
+---
+// 二叉堆的两种视角：上方是逻辑上的树，下方是实际存储的数组。
+// 节点 i 的子节点是 2i+1、2i+2，父节点是 (i-1)/2。
+interface Props {
+	label?: string;
+	caption?: string;
+}
+const { label = '图', caption } = Astro.props;
+
+const values = [3, 5, 4, 9, 6, 8, 7];
+// 树节点坐标（viewBox 640 × 330）
+const pos = [
+	[320, 40],
+	[180, 110],
+	[460, 110],
+	[110, 180],
+	[250, 180],
+	[390, 180],
+	[530, 180],
+];
+const cellW = 64;
+const arrX = 320 - (cellW * values.length) / 2;
+const arrY = 250;
+---
+
+<figure class="heap-figure not-content">
+	<svg viewBox="0 0 640 330" role="img" aria-label="二叉堆：树与数组的对应关系">
+		{
+			pos.slice(1).map(([x, y], k) => {
+				const i = k + 1;
+				const [px, py] = pos[(i - 1) >> 1];
+				return <line x1={px} y1={py} x2={x} y2={y} class="edge" />;
+			})
+		}
+		{
+			pos.map(([x, y], i) => (
+				<g>
+					<circle cx={x} cy={y} r="22" class:list={['node', { top: i === 0 }]} />
+					<text x={x} y={y + 6} class:list={['value', { top: i === 0 }]}>
+						{values[i]}
+					</text>
+					<text x={x + 30} y={y - 14} class="idx">
+						{i}
+					</text>
+				</g>
+			))
+		}
+		{
+			values.map((v, i) => (
+				<g>
+					<rect x={arrX + i * cellW} y={arrY} width={cellW} height="40" class:list={['cell', { top: i === 0 }]} />
+					<text x={arrX + i * cellW + cellW / 2} y={arrY + 26} class:list={['value', { top: i === 0 }]}>
+						{v}
+					</text>
+					<text x={arrX + i * cellW + cellW / 2} y={arrY + 62} class="idx">
+						[{i}]
+					</text>
+				</g>
+			))
+		}
+		<path
+			d={`M ${arrX + cellW * 1.5} ${arrY} C ${arrX + cellW * 1.5} ${arrY - 36}, ${arrX + cellW * 3.5} ${arrY - 36}, ${arrX + cellW * 3.5} ${arrY}`}
+			class="link"
+		/>
+		<path
+			d={`M ${arrX + cellW * 1.5} ${arrY} C ${arrX + cellW * 1.5} ${arrY - 50}, ${arrX + cellW * 4.5} ${arrY - 50}, ${arrX + cellW * 4.5} ${arrY}`}
+			class="link"
+		/>
+		<text x={arrX + cellW * 4.75} y={arrY - 14} class="note">[1] 的子节点：[3]、[4]</text>
+	</svg>
+	{
+		caption && (
+			<figcaption>
+				<span class="label">{label}</span>
+				<span>{caption}</span>
+			</figcaption>
+		)
+	}
+</figure>
+
+<style>
+	.heap-figure {
+		margin: 2rem 0;
+		padding: 1.25rem 1rem 0.75rem;
+		border: 1px solid var(--ga-ink);
+		background: var(--ga-raised);
+	}
+	svg {
+		display: block;
+		width: 100%;
+		max-width: 40rem;
+		margin: 0 auto;
+		font-family: var(--__sl-font-mono);
+	}
+	.edge {
+		stroke: var(--sl-color-gray-4);
+		stroke-width: 1.5;
+	}
+	.node {
+		fill: var(--ga-paper);
+		stroke: var(--ga-ink);
+		stroke-width: 1.5;
+	}
+	.cell {
+		fill: var(--ga-paper);
+		stroke: var(--ga-ink);
+		stroke-width: 1.5;
+	}
+	.node.top,
+	.cell.top {
+		fill: var(--ga-vermilion);
+		stroke: var(--ga-vermilion);
+	}
+	.value {
+		fill: var(--ga-ink);
+		font-size: 17px;
+		text-anchor: middle;
+	}
+	.value.top {
+		fill: var(--ga-paper);
+	}
+	.idx {
+		fill: var(--sl-color-gray-3);
+		font-size: 12px;
+		text-anchor: middle;
+	}
+	.link {
+		fill: none;
+		stroke: var(--ga-vermilion);
+		stroke-width: 1.2;
+		stroke-dasharray: 4 3;
+	}
+	.note {
+		fill: var(--ga-vermilion);
+		font-size: 12px;
+	}
+	figcaption {
+		display: flex;
+		gap: 1rem;
+		margin-top: 0.5rem;
+		font-size: 0.875rem;
+		color: var(--sl-color-gray-3);
+	}
+	.label {
+		flex-shrink: 0;
+		font-family: var(--__sl-font-mono);
+		color: var(--ga-vermilion);
+	}
+</style>

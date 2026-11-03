@@ -20,6 +20,7 @@ cpp/
 ├── web/shell.html          # Web 演示页面模板（工具栏、主题同步、自适应高度、离屏暂停）
 ├── foundations/            # 序 · 基础工具：game_loop / vectors / interpolation / random
 ├── pathfinding/terrain_map.h  # 带地形网格演示共用的编辑器与绘制（Dijkstra、A*）
+├── pathfinding/astar_opt/astar_bench.cpp  # A* 性能对比（不进 CMake，手动 -O2 编译，见文件开头）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试
