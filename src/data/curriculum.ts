@@ -38,7 +38,7 @@ export const parts: Part[] = [
 		en: 'Pathfinding',
 		chapters: [
 			{ no: '1.1', title: 'BFS：从洪水填充开始', href: '/pathfinding/bfs/', status: 'published' },
-			planned('1.2', 'Dijkstra：当每一步的代价不同'),
+			{ no: '1.2', title: 'Dijkstra：当每一步的代价不同', href: '/pathfinding/dijkstra/', status: 'published' },
 			planned('1.3', 'A*：启发函数与 Open / Closed 表'),
 			planned('1.4', 'A* 优化：二叉堆、启发权重与路径平滑'),
 			planned('1.5', 'JPS 跳点搜索'),

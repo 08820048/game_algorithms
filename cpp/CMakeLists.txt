@@ -94,3 +94,6 @@ add_algo_test(random_test foundations/random/random_test.cpp)
 # ---------------------------------------------------------------------------
 add_demo(bfs pathfinding/bfs/demo.cpp)
 add_algo_test(bfs_test pathfinding/bfs/bfs_test.cpp)
+
+add_demo(dijkstra pathfinding/dijkstra/demo.cpp)
+add_algo_test(dijkstra_test pathfinding/dijkstra/dijkstra_test.cpp)
