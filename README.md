@@ -24,6 +24,7 @@ cpp/
 ├── pathfinding/jps/jps_bench.cpp        # JPS 与 A* 性能对比（同上）
 ├── pathfinding/flowfield/flowfield_bench.cpp  # 流场与逐单位 A* 对比（同上）
 ├── pathfinding/hpa/hpa_bench.cpp        # HPA* 与 A* 对比，可传地图边长（同上）
+├── collision/sat/sat_bench.cpp          # SAT 耗时、法线单位化与分离轴缓存对比（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

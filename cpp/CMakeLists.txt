@@ -123,3 +123,5 @@ add_algo_test(hpa_test pathfinding/hpa/hpa_test.cpp)
 # ---------------------------------------------------------------------------
 add_demo(intersect collision/intersect/demo.cpp)
 add_algo_test(intersect_test collision/intersect/intersect_test.cpp)
+add_demo(sat collision/sat/demo.cpp)
+add_algo_test(sat_test collision/sat/sat_test.cpp)
