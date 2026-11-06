@@ -155,3 +155,6 @@ add_algo_test(fsm_test ai/fsm/fsm_test.cpp)
 add_demo(bt ai/bt/demo.cpp)
 add_algo_test(bt_test ai/bt/bt_test.cpp)
 # 每帧开销 ai/bt/bt_bench.cpp 手动编译，用法见文件开头
+add_demo(goap ai/goap/demo.cpp)
+add_algo_test(goap_test ai/goap/goap_test.cpp)
+# 规划器对比 ai/goap/goap_bench.cpp 手动编译，用法见文件开头
