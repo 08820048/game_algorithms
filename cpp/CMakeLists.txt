@@ -136,3 +136,6 @@ add_algo_test(quadtree_test collision/quadtree/quadtree_test.cpp)
 add_demo(bvh collision/bvh/demo.cpp)
 add_algo_test(bvh_test collision/bvh/bvh_test.cpp)
 # 性能测试 collision/bvh/bvh_bench.cpp 手动编译，用法见文件开头
+add_demo(integration collision/integration/demo.cpp)
+add_algo_test(integration_test collision/integration/integration_test.cpp)
+# 精度与开销对比 collision/integration/integration_bench.cpp 手动编译，用法见文件开头

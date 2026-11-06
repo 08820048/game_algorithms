@@ -58,7 +58,7 @@ export const parts: Part[] = [
 			{ no: '2.4', title: '宽相检测：均匀网格与空间哈希', href: '/collision/spatial-hash/', status: 'published' },
 			{ no: '2.5', title: '宽相检测：四叉树与八叉树', href: '/collision/quadtree/', status: 'published' },
 			{ no: '2.6', title: '宽相检测：BVH 与 Sweep and Prune', href: '/collision/bvh/', status: 'published' },
-			planned('2.7', '数值积分：Euler、Verlet 与 RK4'),
+			{ no: '2.7', title: '数值积分：Euler、Verlet 与 RK4', href: '/collision/integration/', status: 'published' },
 			planned('2.8', '碰撞响应与冲量'),
 			planned('2.9', '连续碰撞检测：子弹为什么会穿墙'),
 		],
