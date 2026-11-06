@@ -69,7 +69,7 @@ export const parts: Part[] = [
 		en: 'Game AI',
 		chapters: [
 			{ no: '3.1', title: '有限状态机与分层状态机', href: '/ai/fsm/', status: 'published' },
-			planned('3.2', '行为树'),
+			{ no: '3.2', title: '行为树', href: '/ai/behavior-tree/', status: 'published' },
 			planned('3.3', 'GOAP：目标导向行为规划'),
 			planned('3.4', 'Utility AI：效用评分决策'),
 			planned('3.5', '转向行为与 Boids 群体模拟'),
