@@ -54,7 +54,7 @@ export const parts: Part[] = [
 		chapters: [
 			{ no: '2.1', title: '基础相交测试：AABB、圆与射线', href: '/collision/intersection/', status: 'published' },
 			{ no: '2.2', title: '分离轴定理（SAT）', href: '/collision/sat/', status: 'published' },
-			planned('2.3', 'GJK 与 EPA'),
+			{ no: '2.3', title: 'GJK 与 EPA', href: '/collision/gjk/', status: 'published' },
 			planned('2.4', '宽相检测：均匀网格与空间哈希'),
 			planned('2.5', '宽相检测：四叉树与八叉树'),
 			planned('2.6', '宽相检测：BVH 与 Sweep and Prune'),
