@@ -1,0 +1,9 @@
+// Cloudflare Workers 静态资源部署：npm run build 之后把 dist/ 原样发布
+{
+  "name": "game-algorithms",
+  "compatibility_date": "2026-01-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
