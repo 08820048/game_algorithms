@@ -145,3 +145,10 @@ add_algo_test(impulse_test collision/impulse/impulse_test.cpp)
 add_demo(ccd collision/ccd/demo.cpp)
 add_algo_test(ccd_test collision/ccd/ccd_test.cpp)
 # 隧穿率与开销 collision/ccd/ccd_bench.cpp 手动编译，用法见文件开头
+
+# ---------------------------------------------------------------------------
+# 模块三 · 游戏 AI
+# ---------------------------------------------------------------------------
+add_demo(fsm ai/fsm/demo.cpp)
+add_algo_test(fsm_test ai/fsm/fsm_test.cpp)
+# 每帧开销对比 ai/fsm/fsm_bench.cpp 手动编译，用法见文件开头

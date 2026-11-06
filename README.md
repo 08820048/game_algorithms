@@ -32,6 +32,7 @@ cpp/
 ├── collision/integration/integration_bench.cpp  # 积分方法的精度、开销与 float 精度（同上）
 ├── collision/impulse/impulse_bench.cpp  # 冲量求解器：堆叠、热启动、Baumgarte、牛顿摆（同上）
 ├── collision/ccd/ccd_bench.cpp          # 隧穿率、扫掠测试与保守前进的开销（同上）
+├── ai/fsm/fsm_bench.cpp                 # 状态机每帧开销：switch、扁平、分层、共享定义（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试
