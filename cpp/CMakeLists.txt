@@ -142,3 +142,6 @@ add_algo_test(integration_test collision/integration/integration_test.cpp)
 add_demo(impulse collision/impulse/demo.cpp)
 add_algo_test(impulse_test collision/impulse/impulse_test.cpp)
 # 稳定性与开销 collision/impulse/impulse_bench.cpp 手动编译，用法见文件开头
+add_demo(ccd collision/ccd/demo.cpp)
+add_algo_test(ccd_test collision/ccd/ccd_test.cpp)
+# 隧穿率与开销 collision/ccd/ccd_bench.cpp 手动编译，用法见文件开头

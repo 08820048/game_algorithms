@@ -60,7 +60,7 @@ export const parts: Part[] = [
 			{ no: '2.6', title: '宽相检测：BVH 与 Sweep and Prune', href: '/collision/bvh/', status: 'published' },
 			{ no: '2.7', title: '数值积分：Euler、Verlet 与 RK4', href: '/collision/integration/', status: 'published' },
 			{ no: '2.8', title: '碰撞响应与冲量', href: '/collision/impulse/', status: 'published' },
-			planned('2.9', '连续碰撞检测：子弹为什么会穿墙'),
+			{ no: '2.9', title: '连续碰撞检测：子弹为什么会穿墙', href: '/collision/ccd/', status: 'published' },
 		],
 	},
 	{
