@@ -75,3 +75,10 @@ scripts/
 - 自定义域名：`algo.xuyi.dev`
 
 wasm 产物已提交在 `public/demos/` 中，因此构建环境不需要 Emscripten。修改 C++ 代码后记得重新运行 `npm run demos:build` 并提交产物。
+
+## 版权与许可
+
+© 2026 XuYi
+
+- **代码**（`cpp/`、`scripts/`、站点组件与配置，以及 `public/demos/` 中编译好的演示）：[MIT](LICENSE)
+- **文章与图示**（`src/content/docs/`、`src/components/figures/`）：[CC BY-NC-SA 4.0](LICENSE-CONTENT)，转载请署名并附原文链接，禁止商业使用

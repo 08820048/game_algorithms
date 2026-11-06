@@ -1,0 +1,29 @@
+---
+/**
+ * 文章页脚：Starlight 默认页脚 + 一行版权与许可声明。首页（splash）不显示页脚。
+ */
+import Default from '@astrojs/starlight/components/Footer.astro';
+
+const url = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+---
+
+<Default />
+<p class="license">
+	© 2026 XuYi · 原文 <a href={url}>{url}</a><br />
+	文章采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" rel="license">CC BY-NC-SA 4.0</a> 许可，转载请署名并附原文链接；代码以 <a href="https://github.com/08820048/game_algorithms/blob/main/LICENSE">MIT</a> 协议开源。
+</p>
+
+<style>
+	.license {
+		margin-top: 2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--sl-color-hairline-light);
+		font-size: var(--sl-text-xs);
+		line-height: 1.8;
+		color: var(--sl-color-gray-3);
+		word-break: break-all;
+	}
+	.license a {
+		color: inherit;
+	}
+</style>

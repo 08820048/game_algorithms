@@ -26,6 +26,7 @@ export default defineConfig({
 			],
 			components: {
 				PageTitle: './src/components/overrides/PageTitle.astro',
+				Footer: './src/components/overrides/Footer.astro',
 				SiteTitle: './src/components/overrides/SiteTitle.astro',
 			},
 			expressiveCode: {
