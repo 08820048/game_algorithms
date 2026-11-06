@@ -56,7 +56,7 @@ export const parts: Part[] = [
 			{ no: '2.2', title: '分离轴定理（SAT）', href: '/collision/sat/', status: 'published' },
 			{ no: '2.3', title: 'GJK 与 EPA', href: '/collision/gjk/', status: 'published' },
 			{ no: '2.4', title: '宽相检测：均匀网格与空间哈希', href: '/collision/spatial-hash/', status: 'published' },
-			planned('2.5', '宽相检测：四叉树与八叉树'),
+			{ no: '2.5', title: '宽相检测：四叉树与八叉树', href: '/collision/quadtree/', status: 'published' },
 			planned('2.6', '宽相检测：BVH 与 Sweep and Prune'),
 			planned('2.7', '数值积分：Euler、Verlet 与 RK4'),
 			planned('2.8', '碰撞响应与冲量'),

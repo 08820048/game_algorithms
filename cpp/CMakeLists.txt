@@ -130,3 +130,6 @@ add_algo_test(gjk_test collision/gjk/gjk_test.cpp)
 add_demo(spatial_hash collision/spatial_hash/demo.cpp)
 add_algo_test(spatial_hash_test collision/spatial_hash/spatial_hash_test.cpp)
 # 性能测试 collision/spatial_hash/spatial_hash_bench.cpp 手动编译，用法见文件开头
+add_demo(quadtree collision/quadtree/demo.cpp)
+add_algo_test(quadtree_test collision/quadtree/quadtree_test.cpp)
+# 性能测试 collision/quadtree/quadtree_bench.cpp 手动编译，用法见文件开头
