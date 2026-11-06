@@ -26,6 +26,7 @@ cpp/
 ├── pathfinding/hpa/hpa_bench.cpp        # HPA* 与 A* 对比，可传地图边长（同上）
 ├── collision/sat/sat_bench.cpp          # SAT 耗时、法线单位化与分离轴缓存对比（同上）
 ├── collision/gjk/gjk_bench.cpp          # GJK / EPA 与 SAT 对比，曲线形状的容差（同上）
+├── collision/spatial_hash/spatial_hash_bench.cpp  # 均匀网格 / 空间哈希与两两测试对比（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试
