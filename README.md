@@ -28,6 +28,7 @@ cpp/
 ├── collision/gjk/gjk_bench.cpp          # GJK / EPA 与 SAT 对比，曲线形状的容差（同上）
 ├── collision/spatial_hash/spatial_hash_bench.cpp  # 均匀网格 / 空间哈希与两两测试对比（同上）
 ├── collision/quadtree/quadtree_bench.cpp  # 四叉树 / 八叉树与网格对比（同上）
+├── collision/bvh/bvh_bench.cpp          # SAP、动态 BVH 与网格、四叉树对比（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

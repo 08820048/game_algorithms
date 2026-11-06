@@ -57,7 +57,7 @@ export const parts: Part[] = [
 			{ no: '2.3', title: 'GJK 与 EPA', href: '/collision/gjk/', status: 'published' },
 			{ no: '2.4', title: '宽相检测：均匀网格与空间哈希', href: '/collision/spatial-hash/', status: 'published' },
 			{ no: '2.5', title: '宽相检测：四叉树与八叉树', href: '/collision/quadtree/', status: 'published' },
-			planned('2.6', '宽相检测：BVH 与 Sweep and Prune'),
+			{ no: '2.6', title: '宽相检测：BVH 与 Sweep and Prune', href: '/collision/bvh/', status: 'published' },
 			planned('2.7', '数值积分：Euler、Verlet 与 RK4'),
 			planned('2.8', '碰撞响应与冲量'),
 			planned('2.9', '连续碰撞检测：子弹为什么会穿墙'),
