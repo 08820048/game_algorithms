@@ -165,3 +165,6 @@ add_demo(steering ai/steering/steering_demo.cpp)
 add_demo(boids ai/steering/boids_demo.cpp)
 add_algo_test(steering_test ai/steering/steering_test.cpp)
 # 邻居查询、规则消融、累加顺序与混沌、抵达与避障 ai/steering/steering_bench.cpp 手动编译，用法见文件开头
+add_demo(influence ai/influence/demo.cpp)
+add_algo_test(influence_test ai/influence/influence_test.cpp)
+# 开销、传播延迟、盖章穿墙与避险路径 ai/influence/influence_bench.cpp 手动编译，用法见文件开头
