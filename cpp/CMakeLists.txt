@@ -161,3 +161,7 @@ add_algo_test(goap_test ai/goap/goap_test.cpp)
 add_demo(utility ai/utility/demo.cpp)
 add_algo_test(utility_test ai/utility/utility_test.cpp)
 # 组合方式、剪枝、惯性与消融实验 ai/utility/utility_bench.cpp 手动编译，用法见文件开头
+add_demo(steering ai/steering/steering_demo.cpp)
+add_demo(boids ai/steering/boids_demo.cpp)
+add_algo_test(steering_test ai/steering/steering_test.cpp)
+# 邻居查询、规则消融、累加顺序与混沌、抵达与避障 ai/steering/steering_bench.cpp 手动编译，用法见文件开头

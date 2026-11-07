@@ -36,6 +36,7 @@ cpp/
 ├── ai/bt/bt_bench.cpp                   # 行为树每帧开销、响应式节点的代价（同上）
 ├── ai/goap/goap_bench.cpp               # GOAP 正向与反向搜索、启发函数对比（同上）
 ├── ai/utility/utility_bench.cpp         # 效用 AI：组合方式偏差、剪枝开销、惯性与抖动、消融（同上）
+├── ai/steering/steering_bench.cpp       # 转向与 Boids：邻居查询、规则消融、累加顺序与混沌、避障组合（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

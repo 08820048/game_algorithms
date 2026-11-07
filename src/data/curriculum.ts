@@ -72,7 +72,7 @@ export const parts: Part[] = [
 			{ no: '3.2', title: '行为树', href: '/ai/behavior-tree/', status: 'published' },
 			{ no: '3.3', title: 'GOAP：目标导向行为规划', href: '/ai/goap/', status: 'published' },
 			{ no: '3.4', title: 'Utility AI：效用评分决策', href: '/ai/utility/', status: 'published' },
-			planned('3.5', '转向行为与 Boids 群体模拟'),
+			{ no: '3.5', title: '转向行为与 Boids 群体模拟', href: '/ai/steering/', status: 'published' },
 			planned('3.6', '影响力图'),
 			planned('3.7', 'Minimax 与 Alpha-Beta 剪枝'),
 			planned('3.8', '蒙特卡洛树搜索'),
