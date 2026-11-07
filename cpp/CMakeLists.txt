@@ -158,3 +158,6 @@ add_algo_test(bt_test ai/bt/bt_test.cpp)
 add_demo(goap ai/goap/demo.cpp)
 add_algo_test(goap_test ai/goap/goap_test.cpp)
 # 规划器对比 ai/goap/goap_bench.cpp 手动编译，用法见文件开头
+add_demo(utility ai/utility/demo.cpp)
+add_algo_test(utility_test ai/utility/utility_test.cpp)
+# 组合方式、剪枝、惯性与消融实验 ai/utility/utility_bench.cpp 手动编译，用法见文件开头
