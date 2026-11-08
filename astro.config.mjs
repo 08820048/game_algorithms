@@ -65,6 +65,7 @@ export default defineConfig({
 				{ label: 'I · 寻路', items: [{ autogenerate: { directory: 'pathfinding' } }] },
 				{ label: 'II · 碰撞检测与物理', items: [{ autogenerate: { directory: 'collision' } }] },
 				{ label: 'III · 游戏 AI', items: [{ autogenerate: { directory: 'ai' } }] },
+				{ label: 'IV · 程序化生成', items: [{ autogenerate: { directory: 'procgen' } }] },
 			],
 		}),
 	],

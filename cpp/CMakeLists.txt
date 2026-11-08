@@ -180,3 +180,11 @@ add_demo(fov ai/fov/demo.cpp)
 add_demo(guards ai/fov/guards_demo.cpp)
 add_algo_test(fov_test ai/fov/fov_test.cpp)
 # 各算法的开销、与精确定义的差异、对称性、单点视线 ai/fov/fov_bench.cpp 手动编译，用法见文件开头
+
+# ---------------------------------------------------------------------------
+# 模块四 · 程序化生成
+# ---------------------------------------------------------------------------
+add_demo(noise_1d procgen/noise/lattice_demo.cpp)
+add_demo(noise procgen/noise/noise_demo.cpp)
+add_algo_test(noise_test procgen/noise/noise_test.cpp)
+# 分布、格点结构、频谱、各向异性、导数跳变、开销、float 精度 procgen/noise/noise_bench.cpp 手动编译，用法见文件开头

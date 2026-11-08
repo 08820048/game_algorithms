@@ -41,6 +41,7 @@ cpp/
 ├── ai/minimax/minimax_bench.cpp         # 博弈树搜索：剪枝、排序、置换表的节点数，奇偶效应，对局，小棋盘解到终局（同上）
 ├── ai/mcts/mcts_bench.cpp               # 蒙特卡洛树搜索：迭代次数与探索常数、启发式模拟、与 Alpha-Beta 对局、浅层陷阱（同上）
 ├── ai/fov/fov_bench.cpp                 # 视野：各算法的开销、与精确定义的差异、对称性、单点视线（同上）
+├── procgen/noise/noise_bench.cpp        # 噪声：分布、格点痕迹、频谱、梯度方向、导数跳变、开销、float 精度（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

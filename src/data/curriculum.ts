@@ -84,7 +84,7 @@ export const parts: Part[] = [
 		title: '程序化生成',
 		en: 'Procedural Generation',
 		chapters: [
-			planned('4.1', '噪声：Value Noise 与 Perlin Noise'),
+			{ no: '4.1', title: '噪声：Value Noise 与 Perlin Noise', href: '/procgen/noise/', status: 'published' },
 			planned('4.2', '噪声：Simplex、Worley 与分形布朗运动'),
 			planned('4.3', '用噪声生成地形'),
 			planned('4.4', '地牢生成：BSP、随机游走、房间与走廊'),
