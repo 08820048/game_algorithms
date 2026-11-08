@@ -176,3 +176,7 @@ add_demo(mcts_phases ai/mcts/phases_demo.cpp)
 add_demo(mcts ai/mcts/mcts_demo.cpp)
 add_algo_test(mcts_test ai/mcts/mcts_test.cpp)
 # 迭代次数与探索常数、速度、与 Alpha-Beta 对局、浅层陷阱 ai/mcts/mcts_bench.cpp 手动编译，用法见文件开头
+add_demo(fov ai/fov/demo.cpp)
+add_demo(guards ai/fov/guards_demo.cpp)
+add_algo_test(fov_test ai/fov/fov_test.cpp)
+# 各算法的开销、与精确定义的差异、对称性、单点视线 ai/fov/fov_bench.cpp 手动编译，用法见文件开头
