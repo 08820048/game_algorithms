@@ -188,3 +188,7 @@ add_demo(noise_1d procgen/noise/lattice_demo.cpp)
 add_demo(noise procgen/noise/noise_demo.cpp)
 add_algo_test(noise_test procgen/noise/noise_test.cpp)
 # 分布、格点结构、频谱、各向异性、导数跳变、开销、float 精度 procgen/noise/noise_bench.cpp 手动编译，用法见文件开头
+add_demo(fbm procgen/fractal/fbm_demo.cpp)
+add_demo(cells procgen/fractal/cells_demo.cpp)
+add_algo_test(fractal_test procgen/fractal/fractal_test.cpp)
+# 分布、方向性、影响半径、fBm 频谱、整数点上的零、3×3 搜索的错误率、开销 procgen/fractal/fractal_bench.cpp 手动编译，用法见文件开头
