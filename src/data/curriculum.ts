@@ -75,7 +75,7 @@ export const parts: Part[] = [
 			{ no: '3.5', title: '转向行为与 Boids 群体模拟', href: '/ai/steering/', status: 'published' },
 			{ no: '3.6', title: '影响力图', href: '/ai/influence-map/', status: 'published' },
 			{ no: '3.7', title: 'Minimax 与 Alpha-Beta 剪枝', href: '/ai/minimax/', status: 'published' },
-			planned('3.8', '蒙特卡洛树搜索'),
+			{ no: '3.8', title: '蒙特卡洛树搜索', href: '/ai/mcts/', status: 'published' },
 			planned('3.9', '视野与感知：阴影投射'),
 		],
 	},

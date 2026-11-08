@@ -39,6 +39,7 @@ cpp/
 ├── ai/steering/steering_bench.cpp       # 转向与 Boids：邻居查询、规则消融、累加顺序与混沌、避障组合（同上）
 ├── ai/influence/influence_bench.cpp     # 影响力图：盖章与传播的开销、穿墙误差、传播拖尾、避险路径（同上）
 ├── ai/minimax/minimax_bench.cpp         # 博弈树搜索：剪枝、排序、置换表的节点数，奇偶效应，对局，小棋盘解到终局（同上）
+├── ai/mcts/mcts_bench.cpp               # 蒙特卡洛树搜索：迭代次数与探索常数、启发式模拟、与 Alpha-Beta 对局、浅层陷阱（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

@@ -172,3 +172,7 @@ add_demo(alphabeta ai/minimax/tree_demo.cpp)
 add_demo(four ai/minimax/connect4_demo.cpp)
 add_algo_test(minimax_test ai/minimax/minimax_test.cpp)
 # 剪枝与排序的节点数、奇偶效应、对局、小棋盘解到终局 ai/minimax/minimax_bench.cpp 手动编译，用法见文件开头
+add_demo(mcts_phases ai/mcts/phases_demo.cpp)
+add_demo(mcts ai/mcts/mcts_demo.cpp)
+add_algo_test(mcts_test ai/mcts/mcts_test.cpp)
+# 迭代次数与探索常数、速度、与 Alpha-Beta 对局、浅层陷阱 ai/mcts/mcts_bench.cpp 手动编译，用法见文件开头
