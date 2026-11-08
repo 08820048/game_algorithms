@@ -168,3 +168,7 @@ add_algo_test(steering_test ai/steering/steering_test.cpp)
 add_demo(influence ai/influence/demo.cpp)
 add_algo_test(influence_test ai/influence/influence_test.cpp)
 # 开销、传播延迟、盖章穿墙与避险路径 ai/influence/influence_bench.cpp 手动编译，用法见文件开头
+add_demo(alphabeta ai/minimax/tree_demo.cpp)
+add_demo(four ai/minimax/connect4_demo.cpp)
+add_algo_test(minimax_test ai/minimax/minimax_test.cpp)
+# 剪枝与排序的节点数、奇偶效应、对局、小棋盘解到终局 ai/minimax/minimax_bench.cpp 手动编译，用法见文件开头
