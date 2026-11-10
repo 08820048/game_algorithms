@@ -204,3 +204,7 @@ add_demo(cave procgen/cave/cave_demo.cpp)
 add_demo(caves procgen/cave/caves_demo.cpp)
 add_algo_test(cave_test procgen/cave/cave_test.cpp)
 # 填充率与相变、收敛与周期、原地更新的方向偏差、柱子规则、连通处理、规模、开销 procgen/cave/cave_bench.cpp 手动编译，用法见文件开头
+add_demo(poisson procgen/poisson/poisson_demo.cpp)
+add_demo(bluenoise procgen/poisson/bluenoise_demo.cpp)
+add_algo_test(poisson_test procgen/poisson/poisson_test.cpp)
+# 投飞镖的饱和、Bridson 的密度与 k、环带取样、活跃点的选法、最近邻距离、功率谱、开销 procgen/poisson/poisson_bench.cpp 手动编译，用法见文件开头
