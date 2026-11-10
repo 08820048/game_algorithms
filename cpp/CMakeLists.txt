@@ -212,3 +212,7 @@ add_demo(delaunay procgen/voronoi/delaunay_demo.cpp)
 add_demo(voronoi procgen/voronoi/voronoi_demo.cpp)
 add_algo_test(delaunay_test procgen/voronoi/delaunay_test.cpp)
 # 插入顺序与定位步数、空腔大小、超级三角形的缺失、谓词精度、邻居数分布、Lloyd 收敛、开销 procgen/voronoi/delaunay_bench.cpp 手动编译，用法见文件开头
+add_demo(wfc procgen/wfc/wfc_demo.cpp)
+add_demo(wfc_overlap procgen/wfc/overlap_demo.cpp)
+add_algo_test(wfc_test procgen/wfc/wfc_test.cpp)
+# 启发式与矛盾率、尺寸与回溯、输出分布的偏差、图块比例、开销 procgen/wfc/wfc_bench.cpp 手动编译，用法见文件开头

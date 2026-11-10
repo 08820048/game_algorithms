@@ -91,7 +91,7 @@ export const parts: Part[] = [
 			{ no: '4.5', title: '元胞自动机生成洞穴', href: '/procgen/cave/', status: 'published' },
 			{ no: '4.6', title: '泊松圆盘采样', href: '/procgen/poisson/', status: 'published' },
 			{ no: '4.7', title: 'Voronoi 与 Delaunay 三角剖分', href: '/procgen/voronoi/', status: 'published' },
-			planned('4.8', '波函数坍缩'),
+			{ no: '4.8', title: '波函数坍缩', href: '/procgen/wfc/', status: 'published' },
 			planned('4.9', 'L-System'),
 		],
 	},
