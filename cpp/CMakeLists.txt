@@ -208,3 +208,7 @@ add_demo(poisson procgen/poisson/poisson_demo.cpp)
 add_demo(bluenoise procgen/poisson/bluenoise_demo.cpp)
 add_algo_test(poisson_test procgen/poisson/poisson_test.cpp)
 # 投飞镖的饱和、Bridson 的密度与 k、环带取样、活跃点的选法、最近邻距离、功率谱、开销 procgen/poisson/poisson_bench.cpp 手动编译，用法见文件开头
+add_demo(delaunay procgen/voronoi/delaunay_demo.cpp)
+add_demo(voronoi procgen/voronoi/voronoi_demo.cpp)
+add_algo_test(delaunay_test procgen/voronoi/delaunay_test.cpp)
+# 插入顺序与定位步数、空腔大小、超级三角形的缺失、谓词精度、邻居数分布、Lloyd 收敛、开销 procgen/voronoi/delaunay_bench.cpp 手动编译，用法见文件开头

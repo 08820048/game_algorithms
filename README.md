@@ -47,6 +47,7 @@ cpp/
 ├── procgen/dungeon/dungeon_bench.cpp    # 地牢：随机游走的步数与形状、BSP 切割方向与连接方式、房间饱和与环路、两次 BFS 的误差（同上）
 ├── procgen/cave/cave_bench.cpp          # 洞穴：填充率与相变、收敛与周期、原地更新的偏差、柱子规则、连通处理、规模（同上）
 ├── procgen/poisson/poisson_bench.cpp    # 泊松圆盘：投飞镖的饱和、Bridson 的 k 与环带取样、晶格化、功率谱、开销（同上）
+├── procgen/voronoi/delaunay_bench.cpp   # Delaunay/Voronoi：插入顺序与定位步数、超级三角形的缺失、谓词精度、邻居数分布、Lloyd 收敛、开销（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

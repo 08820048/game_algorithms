@@ -90,7 +90,7 @@ export const parts: Part[] = [
 			{ no: '4.4', title: '地牢生成：BSP、随机游走、房间与走廊', href: '/procgen/dungeon/', status: 'published' },
 			{ no: '4.5', title: '元胞自动机生成洞穴', href: '/procgen/cave/', status: 'published' },
 			{ no: '4.6', title: '泊松圆盘采样', href: '/procgen/poisson/', status: 'published' },
-			planned('4.7', 'Voronoi 与 Delaunay 三角剖分'),
+			{ no: '4.7', title: 'Voronoi 与 Delaunay 三角剖分', href: '/procgen/voronoi/', status: 'published' },
 			planned('4.8', '波函数坍缩'),
 			planned('4.9', 'L-System'),
 		],
