@@ -53,6 +53,7 @@ cpp/
 ├── animation/spline/spline_bench.cpp    # 贝塞尔与 Catmull-Rom：求值的精度与开销、弧长求积、匀速移动、折线化的段数、参数化与尖点自交（同上）
 ├── animation/ik/ik_bench.cpp            # 反向动力学：收敛速度、可达边界附近的减速、弯曲的分布、跟随移动目标、角度限制（同上）
 ├── animation/camera/camera_bench.cpp    # 相机：各种组合在平台跳跃轨迹上的表现、震屏与帧率、噪声通道错开、trauma 指数、物理与渲染频率不同时的抖动（同上）
+├── animation/particles/particles_bench.cpp # 粒子：发射数与帧率、拖尾的均匀程度、积分与帧率、删除策略、内存布局（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试
