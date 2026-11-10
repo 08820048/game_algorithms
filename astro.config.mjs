@@ -66,6 +66,7 @@ export default defineConfig({
 				{ label: 'II · 碰撞检测与物理', items: [{ autogenerate: { directory: 'collision' } }] },
 				{ label: 'III · 游戏 AI', items: [{ autogenerate: { directory: 'ai' } }] },
 				{ label: 'IV · 程序化生成', items: [{ autogenerate: { directory: 'procgen' } }] },
+				{ label: 'V · 动画与表现', items: [{ autogenerate: { directory: 'animation' } }] },
 			],
 		}),
 	],

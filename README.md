@@ -50,6 +50,7 @@ cpp/
 ├── procgen/voronoi/delaunay_bench.cpp   # Delaunay/Voronoi：插入顺序与定位步数、超级三角形的缺失、谓词精度、邻居数分布、Lloyd 收敛、开销（同上）
 ├── procgen/wfc/wfc_bench.cpp            # 波函数坍缩：启发式与矛盾率、尺寸与回溯、输出分布的偏差、图块比例、熵引起的相变、开销（同上）
 ├── procgen/lsystem/lsystem_bench.cpp    # L-System：长度增长、整串与流式展开、航向的累积误差、盒维数、随机树的差异（同上）
+├── animation/spline/spline_bench.cpp    # 贝塞尔与 Catmull-Rom：求值的精度与开销、弧长求积、匀速移动、折线化的段数、参数化与尖点自交（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

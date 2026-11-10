@@ -220,3 +220,7 @@ add_demo(lsystem procgen/lsystem/lsystem_demo.cpp)
 add_demo(lsystem_trees procgen/lsystem/trees_demo.cpp)
 add_algo_test(lsystem_test procgen/lsystem/lsystem_test.cpp)
 # 长度增长、整串与流式展开的开销、航向的累积误差、盒维数、随机植物的差异 procgen/lsystem/lsystem_bench.cpp 手动编译，用法见文件开头
+add_demo(bezier animation/spline/bezier_demo.cpp)
+add_demo(catmull_rom animation/spline/catmull_demo.cpp)
+add_algo_test(spline_test animation/spline/spline_test.cpp)
+# 求值的精度与开销、弧长求积、匀速移动、折线化的段数、参数化与尖点自交 animation/spline/spline_bench.cpp 手动编译，用法见文件开头

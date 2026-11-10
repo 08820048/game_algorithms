@@ -100,7 +100,7 @@ export const parts: Part[] = [
 		title: '动画与表现',
 		en: 'Animation & Rendering',
 		chapters: [
-			planned('5.1', '贝塞尔曲线与 Catmull-Rom 样条'),
+			{ no: '5.1', title: '贝塞尔曲线与 Catmull-Rom 样条', href: '/animation/spline/', status: 'published' },
 			planned('5.2', '反向动力学：CCD 与 FABRIK'),
 			planned('5.3', '相机算法：跟随、死区与震屏'),
 			planned('5.4', '粒子系统设计'),
