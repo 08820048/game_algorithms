@@ -228,3 +228,7 @@ add_demo(ik animation/ik/ik_demo.cpp)
 add_demo(ik_compare animation/ik/compare_demo.cpp)
 add_algo_test(ik_test animation/ik/ik_test.cpp)
 # 收敛速度、可达边界附近的减速、弯曲的分布、跟随移动目标、角度限制 animation/ik/ik_bench.cpp 手动编译，用法见文件开头
+add_demo(camera animation/camera/camera_demo.cpp)
+add_demo(shake animation/camera/shake_demo.cpp)
+add_algo_test(camera_test animation/camera/camera_test.cpp)
+# 各种相机组合在平台跳跃轨迹上的表现、震屏与帧率、噪声通道错开、trauma 指数、物理与渲染频率不同时的抖动 animation/camera/camera_bench.cpp 手动编译，用法见文件开头
