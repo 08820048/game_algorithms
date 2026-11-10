@@ -196,3 +196,7 @@ add_demo(terrain procgen/terrain/terrain_demo.cpp)
 add_demo(erosion procgen/terrain/erosion_demo.cpp)
 add_algo_test(terrain_test procgen/terrain/terrain_test.cpp)
 # 高度分布、细节与坡度的相关、热侵蚀的方向性、水力侵蚀与河网、开销 procgen/terrain/terrain_bench.cpp 手动编译，用法见文件开头
+add_demo(bsp procgen/dungeon/bsp_demo.cpp)
+add_demo(dungeon procgen/dungeon/dungeon_demo.cpp)
+add_algo_test(dungeon_test procgen/dungeon/dungeon_test.cpp)
+# 随机游走的效率与形状、BSP 的切割与连接、房间的饱和与环路、两次 BFS 的误差、开销 procgen/dungeon/dungeon_bench.cpp 手动编译，用法见文件开头

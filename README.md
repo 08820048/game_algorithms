@@ -44,6 +44,7 @@ cpp/
 ├── procgen/noise/noise_bench.cpp        # 噪声：分布、格点痕迹、频谱、梯度方向、导数跳变、开销、float 精度（同上）
 ├── procgen/fractal/fractal_bench.cpp    # Simplex/Worley/fBm：方向性、影响半径、频谱斜率、整数点的零、3×3 错误率、开销（同上）
 ├── procgen/terrain/terrain_bench.cpp    # 地形：高度分布、细节与坡度的相关、热侵蚀的邻域、水力侵蚀与洼地、开销（同上）
+├── procgen/dungeon/dungeon_bench.cpp    # 地牢：随机游走的步数与形状、BSP 切割方向与连接方式、房间饱和与环路、两次 BFS 的误差（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

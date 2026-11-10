@@ -87,7 +87,7 @@ export const parts: Part[] = [
 			{ no: '4.1', title: '噪声：Value Noise 与 Perlin Noise', href: '/procgen/noise/', status: 'published' },
 			{ no: '4.2', title: '噪声：Simplex、Worley 与分形布朗运动', href: '/procgen/fractal/', status: 'published' },
 			{ no: '4.3', title: '用噪声生成地形', href: '/procgen/terrain/', status: 'published' },
-			planned('4.4', '地牢生成：BSP、随机游走、房间与走廊'),
+			{ no: '4.4', title: '地牢生成：BSP、随机游走、房间与走廊', href: '/procgen/dungeon/', status: 'published' },
 			planned('4.5', '元胞自动机生成洞穴'),
 			planned('4.6', '泊松圆盘采样'),
 			planned('4.7', 'Voronoi 与 Delaunay 三角剖分'),
