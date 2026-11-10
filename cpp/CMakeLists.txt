@@ -216,3 +216,7 @@ add_demo(wfc procgen/wfc/wfc_demo.cpp)
 add_demo(wfc_overlap procgen/wfc/overlap_demo.cpp)
 add_algo_test(wfc_test procgen/wfc/wfc_test.cpp)
 # 启发式与矛盾率、尺寸与回溯、输出分布的偏差、图块比例、开销 procgen/wfc/wfc_bench.cpp 手动编译，用法见文件开头
+add_demo(lsystem procgen/lsystem/lsystem_demo.cpp)
+add_demo(lsystem_trees procgen/lsystem/trees_demo.cpp)
+add_algo_test(lsystem_test procgen/lsystem/lsystem_test.cpp)
+# 长度增长、整串与流式展开的开销、航向的累积误差、盒维数、随机植物的差异 procgen/lsystem/lsystem_bench.cpp 手动编译，用法见文件开头
