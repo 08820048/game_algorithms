@@ -51,6 +51,7 @@ cpp/
 ├── procgen/wfc/wfc_bench.cpp            # 波函数坍缩：启发式与矛盾率、尺寸与回溯、输出分布的偏差、图块比例、熵引起的相变、开销（同上）
 ├── procgen/lsystem/lsystem_bench.cpp    # L-System：长度增长、整串与流式展开、航向的累积误差、盒维数、随机树的差异（同上）
 ├── animation/spline/spline_bench.cpp    # 贝塞尔与 Catmull-Rom：求值的精度与开销、弧长求积、匀速移动、折线化的段数、参数化与尖点自交（同上）
+├── animation/ik/ik_bench.cpp            # 反向动力学：收敛速度、可达边界附近的减速、弯曲的分布、跟随移动目标、角度限制（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

@@ -224,3 +224,7 @@ add_demo(bezier animation/spline/bezier_demo.cpp)
 add_demo(catmull_rom animation/spline/catmull_demo.cpp)
 add_algo_test(spline_test animation/spline/spline_test.cpp)
 # 求值的精度与开销、弧长求积、匀速移动、折线化的段数、参数化与尖点自交 animation/spline/spline_bench.cpp 手动编译，用法见文件开头
+add_demo(ik animation/ik/ik_demo.cpp)
+add_demo(ik_compare animation/ik/compare_demo.cpp)
+add_algo_test(ik_test animation/ik/ik_test.cpp)
+# 收敛速度、可达边界附近的减速、弯曲的分布、跟随移动目标、角度限制 animation/ik/ik_bench.cpp 手动编译，用法见文件开头
