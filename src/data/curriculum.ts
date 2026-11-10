@@ -88,7 +88,7 @@ export const parts: Part[] = [
 			{ no: '4.2', title: '噪声：Simplex、Worley 与分形布朗运动', href: '/procgen/fractal/', status: 'published' },
 			{ no: '4.3', title: '用噪声生成地形', href: '/procgen/terrain/', status: 'published' },
 			{ no: '4.4', title: '地牢生成：BSP、随机游走、房间与走廊', href: '/procgen/dungeon/', status: 'published' },
-			planned('4.5', '元胞自动机生成洞穴'),
+			{ no: '4.5', title: '元胞自动机生成洞穴', href: '/procgen/cave/', status: 'published' },
 			planned('4.6', '泊松圆盘采样'),
 			planned('4.7', 'Voronoi 与 Delaunay 三角剖分'),
 			planned('4.8', '波函数坍缩'),

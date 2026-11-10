@@ -200,3 +200,7 @@ add_demo(bsp procgen/dungeon/bsp_demo.cpp)
 add_demo(dungeon procgen/dungeon/dungeon_demo.cpp)
 add_algo_test(dungeon_test procgen/dungeon/dungeon_test.cpp)
 # 随机游走的效率与形状、BSP 的切割与连接、房间的饱和与环路、两次 BFS 的误差、开销 procgen/dungeon/dungeon_bench.cpp 手动编译，用法见文件开头
+add_demo(cave procgen/cave/cave_demo.cpp)
+add_demo(caves procgen/cave/caves_demo.cpp)
+add_algo_test(cave_test procgen/cave/cave_test.cpp)
+# 填充率与相变、收敛与周期、原地更新的方向偏差、柱子规则、连通处理、规模、开销 procgen/cave/cave_bench.cpp 手动编译，用法见文件开头
