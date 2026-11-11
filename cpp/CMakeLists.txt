@@ -249,3 +249,7 @@ add_demo(ecs_storage architecture/ecs/storage_demo.cpp)
 add_demo(ecs_iterate architecture/ecs/iterate_demo.cpp)
 add_algo_test(ecs_test architecture/ecs/ecs_test.cpp)
 # 移动系统（面向对象、数组、sparse set、archetype）、多组件查询、结构变化的代价、archetype 碎片化 architecture/ecs/ecs_bench.cpp 手动编译，用法见文件开头
+add_demo(replay architecture/command/replay_demo.cpp)
+add_demo(undo architecture/command/undo_demo.cpp)
+add_algo_test(command_test architecture/command/command_test.cpp)
+# 录像的存储、混沌（扰动多久放大）、关键帧跳转、撤销的三种做法、反向操作的误差 architecture/command/command_bench.cpp 手动编译，用法见文件开头
