@@ -236,3 +236,7 @@ add_demo(particles animation/particles/particles_demo.cpp)
 add_demo(particles_integrate animation/particles/integrate_demo.cpp)
 add_algo_test(particles_test animation/particles/particles_test.cpp)
 # 发射数与帧率、拖尾的均匀程度、积分与帧率、删除策略、内存布局 animation/particles/particles_bench.cpp 手动编译，用法见文件开头
+add_demo(culling_frustum animation/culling/frustum_demo.cpp)
+add_demo(culling_occlusion animation/culling/occlusion_demo.cpp)
+add_algo_test(culling_test animation/culling/culling_test.cpp)
+# 平面测试的假阳性、层次剔除与平面掩码、遮挡剔除的分辨率与融合、Hi-Z、只光栅化最近的遮挡物、森林 animation/culling/culling_bench.cpp 手动编译，用法见文件开头

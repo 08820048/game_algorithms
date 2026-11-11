@@ -54,6 +54,7 @@ cpp/
 ├── animation/ik/ik_bench.cpp            # 反向动力学：收敛速度、可达边界附近的减速、弯曲的分布、跟随移动目标、角度限制（同上）
 ├── animation/camera/camera_bench.cpp    # 相机：各种组合在平台跳跃轨迹上的表现、震屏与帧率、噪声通道错开、trauma 指数、物理与渲染频率不同时的抖动（同上）
 ├── animation/particles/particles_bench.cpp # 粒子：发射数与帧率、拖尾的均匀程度、积分与帧率、删除策略、内存布局（同上）
+├── animation/culling/culling_bench.cpp   # 剔除：平面测试的假阳性、层次剔除与平面掩码、遮挡的分辨率、遮挡物选择、Hi-Z、融合（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

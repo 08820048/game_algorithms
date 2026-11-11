@@ -104,7 +104,7 @@ export const parts: Part[] = [
 			{ no: '5.2', title: '反向动力学：CCD 与 FABRIK', href: '/animation/ik/', status: 'published' },
 			{ no: '5.3', title: '相机算法：跟随、死区与震屏', href: '/animation/camera/', status: 'published' },
 			{ no: '5.4', title: '粒子系统设计', href: '/animation/particles/', status: 'published' },
-			planned('5.5', '视锥剔除与遮挡剔除'),
+			{ no: '5.5', title: '视锥剔除与遮挡剔除', href: '/animation/culling/', status: 'published' },
 		],
 	},
 	{
