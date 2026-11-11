@@ -245,3 +245,7 @@ add_demo(handles architecture/pool/handles_demo.cpp)
 add_demo(cache_lines architecture/pool/cache_demo.cpp)
 add_algo_test(pool_test architecture/pool/pool_test.cpp)
 # 分配与销毁、遍历（指针、链表、池的存活率、SlotMap）、按引用访问、步长与缓存行、伪共享、代数回绕 architecture/pool/pool_bench.cpp 手动编译，用法见文件开头
+add_demo(ecs_storage architecture/ecs/storage_demo.cpp)
+add_demo(ecs_iterate architecture/ecs/iterate_demo.cpp)
+add_algo_test(ecs_test architecture/ecs/ecs_test.cpp)
+# 移动系统（面向对象、数组、sparse set、archetype）、多组件查询、结构变化的代价、archetype 碎片化 architecture/ecs/ecs_bench.cpp 手动编译，用法见文件开头
