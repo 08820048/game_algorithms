@@ -240,3 +240,8 @@ add_demo(culling_frustum animation/culling/frustum_demo.cpp)
 add_demo(culling_occlusion animation/culling/occlusion_demo.cpp)
 add_algo_test(culling_test animation/culling/culling_test.cpp)
 # 平面测试的假阳性、层次剔除与平面掩码、遮挡剔除的分辨率与融合、Hi-Z、只光栅化最近的遮挡物、森林 animation/culling/culling_bench.cpp 手动编译，用法见文件开头
+
+add_demo(handles architecture/pool/handles_demo.cpp)
+add_demo(cache_lines architecture/pool/cache_demo.cpp)
+add_algo_test(pool_test architecture/pool/pool_test.cpp)
+# 分配与销毁、遍历（指针、链表、池的存活率、SlotMap）、按引用访问、步长与缓存行、伪共享、代数回绕 architecture/pool/pool_bench.cpp 手动编译，用法见文件开头

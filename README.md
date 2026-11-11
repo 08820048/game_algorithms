@@ -55,6 +55,7 @@ cpp/
 ├── animation/camera/camera_bench.cpp    # 相机：各种组合在平台跳跃轨迹上的表现、震屏与帧率、噪声通道错开、trauma 指数、物理与渲染频率不同时的抖动（同上）
 ├── animation/particles/particles_bench.cpp # 粒子：发射数与帧率、拖尾的均匀程度、积分与帧率、删除策略、内存布局（同上）
 ├── animation/culling/culling_bench.cpp   # 剔除：平面测试的假阳性、层次剔除与平面掩码、遮挡的分辨率、遮挡物选择、Hi-Z、融合（同上）
+├── architecture/pool/pool_bench.cpp      # 对象池：分配与销毁、遍历（指针、链表、池的存活率、SlotMap）、按引用访问、步长与缓存行、伪共享、代数回绕（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

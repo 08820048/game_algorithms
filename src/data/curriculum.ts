@@ -112,7 +112,7 @@ export const parts: Part[] = [
 		title: '架构、性能与网络',
 		en: 'Architecture & Networking',
 		chapters: [
-			planned('6.1', '对象池与内存布局'),
+			{ no: '6.1', title: '对象池与内存布局', href: '/architecture/pool/', status: 'published' },
 			planned('6.2', 'ECS 与数据导向设计'),
 			planned('6.3', '命令模式、录像回放与撤销'),
 			planned('6.4', '定点数与确定性计算'),

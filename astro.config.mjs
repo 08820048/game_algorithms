@@ -67,6 +67,7 @@ export default defineConfig({
 				{ label: 'III · 游戏 AI', items: [{ autogenerate: { directory: 'ai' } }] },
 				{ label: 'IV · 程序化生成', items: [{ autogenerate: { directory: 'procgen' } }] },
 				{ label: 'V · 动画与表现', items: [{ autogenerate: { directory: 'animation' } }] },
+				{ label: 'VI · 架构、性能与网络', items: [{ autogenerate: { directory: 'architecture' } }] },
 			],
 		}),
 	],
