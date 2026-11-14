@@ -115,7 +115,7 @@ export const parts: Part[] = [
 			{ no: '6.1', title: '对象池与内存布局', href: '/architecture/pool/', status: 'published' },
 			{ no: '6.2', title: 'ECS 与数据导向设计', href: '/architecture/ecs/', status: 'published' },
 			{ no: '6.3', title: '命令模式、录像回放与撤销', href: '/architecture/command/', status: 'published' },
-			planned('6.4', '定点数与确定性计算'),
+			{ no: '6.4', title: '定点数与确定性计算', href: '/architecture/fixed-point/', status: 'published' },
 			planned('6.5', '网络同步：帧同步与状态同步'),
 			planned('6.6', '网络同步：客户端预测、回滚与延迟补偿'),
 		],

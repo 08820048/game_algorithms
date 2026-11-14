@@ -263,9 +263,11 @@ static void testCentripetalHasNoDefects() {
     CHECK(!e.loop && !e.cusp);
     // 端点处速度为零（P2 = P3）不算尖点
     CHECK(!hasCusp({{{0, 0}, {1, 1}, {2, 0}, {2, 0}}}));
-    // 急转弯但不自交：稀疏采样的折线会切过弯道而相交，必须用更密的采样确认
+    // 急转弯但不自交。这里原来断言"120 段的折线会相交"，那其实是舍入造成的误报：急转弯处相邻的线段几乎共线，
+    // 叉积接近 0，结果取决于编译器是否把 a*b − c*d 合并成 FMA。关掉合并（6.4）后，任何采样数都不相交。
+    // 随机 6 万条曲线里，"稀疏相交、10 倍采样不相交"的有 2 条（合并时 17 条），留出 1e-3 的余量再判，一条都不剩
     Cubic sharp = catmullRomToBezier({11.6457f, 12.1852f}, {3.83368f, -4.3235f}, {3.54312f, -5.09548f}, {-24.9963f, -93.6298f}, 1);
-    CHECK(polylineSelfCrosses(sharp, 120));
+    CHECK(!polylineSelfCrosses(sharp, 1200));
     CHECK(!findDefects(sharp, 120).loop);
 
     Pcg32 r(8);

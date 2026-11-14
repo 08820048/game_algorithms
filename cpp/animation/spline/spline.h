@@ -303,7 +303,8 @@ inline bool polylineSelfCrosses(const Cubic& c, int samples) {
             if (segmentsCross(poly[size_t(i)], poly[size_t(i) + 1], poly[size_t(j)], poly[size_t(j) + 1])) return true;
     return false;
 }
-// 采样太稀时，急转弯处的折线会切过弯道、自己相交。所以发现相交后用 10 倍的采样再确认一次
+// 急转弯处相邻的线段几乎共线，叉积接近 0，舍入可能把它们误判为相交（是否误报还取决于编译器是否合并 FMA，见 6.4）。
+// 所以发现相交后用 10 倍的采样再确认一次
 inline Defects findDefects(const Cubic& c, int samples = 200) {
     Defects r;
     r.cusp = hasCusp(c);

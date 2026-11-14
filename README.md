@@ -58,6 +58,7 @@ cpp/
 ├── architecture/pool/pool_bench.cpp      # 对象池：分配与销毁、遍历（指针、链表、池的存活率、SlotMap）、按引用访问、步长与缓存行、伪共享、代数回绕（同上）
 ├── architecture/ecs/ecs_bench.cpp        # ECS：移动系统（面向对象、数组、sparse set、archetype）、多组件查询、结构变化、碎片化（同上）
 ├── architecture/command/command_bench.cpp # 命令：录像的存储、混沌、关键帧跳转、撤销的三种做法、反向操作的误差（同上）
+├── architecture/fixed/fixed_bench.cpp   # 定点数：各格式的精度、轨道误差、加法顺序与 fma 的不同步、速度、各编译选项下的哈希（同上）
 └── pathfinding/bfs/
     ├── bfs.h               # 纯算法，不依赖渲染，可直接拷进你的项目
     ├── bfs_test.cpp        # 单元测试

@@ -24,26 +24,35 @@ static bool insideRef(const View& v, Vec2 p) {
     return q.y >= v.near && q.y <= v.far && std::fabs(q.x) <= q.y * std::tan(v.halfFov);
 }
 
-// 参照：用盒子的四条边裁剪视锥梯形，剩下的面积 > 0 ⇔ 相交
-static float clippedArea(const Frustum& f, const Aabb& b) {
-    std::vector<Vec2> poly(f.corners.begin(), f.corners.end()), out;
+// 参照：用盒子的四条边裁剪视锥梯形，剩下的面积 > 0 ⇔ 相交。
+// 用 double 计算：擦边的盒子只切进去千分之几，切下的面积约 1e-5，float 的叉积相消后会变成 0（6.4 加上
+// -ffp-contract=off 后暴露出来：参照说不相交，被测函数说相交，其实被测函数是对的）
+static double clippedArea(const Frustum& f, const Aabb& b) {
+    struct D {
+        double x, y;
+    };
+    std::vector<D> poly, out;
+    for (Vec2 c : f.corners) poly.push_back({c.x, c.y});
     auto clip = [&](auto inside, auto cut) {
         out.clear();
         for (size_t i = 0; i < poly.size(); ++i) {
-            Vec2 a = poly[i], c = poly[(i + 1) % poly.size()];
+            D a = poly[i], c = poly[(i + 1) % poly.size()];
             if (inside(a)) out.push_back(a);
             if (inside(a) != inside(c)) out.push_back(cut(a, c));
         }
         poly.swap(out);
     };
-    auto atX = [](float x) { return [x](Vec2 a, Vec2 c) { return a + (c - a) * ((x - a.x) / (c.x - a.x)); }; };
-    auto atY = [](float y) { return [y](Vec2 a, Vec2 c) { return a + (c - a) * ((y - a.y) / (c.y - a.y)); }; };
-    clip([&](Vec2 p) { return p.x >= b.min.x; }, atX(b.min.x));
-    clip([&](Vec2 p) { return p.x <= b.max.x; }, atX(b.max.x));
-    clip([&](Vec2 p) { return p.y >= b.min.y; }, atY(b.min.y));
-    clip([&](Vec2 p) { return p.y <= b.max.y; }, atY(b.max.y));
-    float area = 0;
-    for (size_t i = 0; i < poly.size(); ++i) area += cross(poly[i], poly[(i + 1) % poly.size()]);
+    auto atX = [](double x) { return [x](D a, D c) { double t = (x - a.x) / (c.x - a.x); return D{x, a.y + (c.y - a.y) * t}; }; };
+    auto atY = [](double y) { return [y](D a, D c) { double t = (y - a.y) / (c.y - a.y); return D{a.x + (c.x - a.x) * t, y}; }; };
+    clip([&](D p) { return p.x >= b.min.x; }, atX(b.min.x));
+    clip([&](D p) { return p.x <= b.max.x; }, atX(b.max.x));
+    clip([&](D p) { return p.y >= b.min.y; }, atY(b.min.y));
+    clip([&](D p) { return p.y <= b.max.y; }, atY(b.max.y));
+    double area = 0;
+    for (size_t i = 0; i < poly.size(); ++i) {
+        D a = poly[i], c = poly[(i + 1) % poly.size()];
+        area += a.x * c.y - a.y * c.x;
+    }
     return std::fabs(area) / 2;
 }
 
@@ -75,13 +84,13 @@ static void testClassify() {
         Frustum f = makeFrustum(v);
         for (const Aabb& b : randomBoxes(r, {v.eye - Vec2{450, 450}, v.eye + Vec2{450, 450}}, 300, 2, 120)) {
             ++cases;
-            float area = clippedArea(f, b);
+            double area = clippedArea(f, b);
             Cull c = classify(f, b);
             if (area > 1e-2f) CHECK(c != Cull::Outside);
             if (c == Cull::Inside)
                 for (Vec2 p : corners(b)) CHECK(insideRef(v, p) || std::fabs(v.toView(p).y - v.near) < 1e-2f);
             bool ex = overlapsExact(f, b);
-            if (area > 1e-2f || area == 0) exactDisagree += ex != (area > 0);
+            if (area > 1e-2 || area == 0) exactDisagree += ex != (area > 0);
             if (c != Cull::Outside && area == 0) ++falsePos;
             // 包围圆比盒子更松：圆判外侧 ⇒ 盒子也判外侧
             Vec2 centre = (b.min + b.max) * 0.5f;

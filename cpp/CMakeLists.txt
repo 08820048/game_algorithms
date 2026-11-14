@@ -25,6 +25,10 @@ FetchContent_Declare(
   GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(raylib)
 
+# 不让编译器把 a*b + c 合并成 FMA：wasm 没有 FMA，桌面端（arm64 上 clang 默认合并）不关掉的话，
+# 同一份确定性模拟在桌面和网页上结果不同（见 6.4 定点数与确定性计算）
+add_compile_options(-ffp-contract=off)
+
 # 把演示画布用的等宽字体（JetBrains Mono 子集，OFL 协议）嵌入为 C 数组，桌面与 Web 都无需额外文件
 set(GA_FONT_FILE "${CMAKE_SOURCE_DIR}/common/assets/JetBrainsMono-Medium-subset.ttf")
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${GA_FONT_FILE}")
@@ -253,3 +257,7 @@ add_demo(replay architecture/command/replay_demo.cpp)
 add_demo(undo architecture/command/undo_demo.cpp)
 add_algo_test(command_test architecture/command/command_test.cpp)
 # 录像的存储、混沌（扰动多久放大）、关键帧跳转、撤销的三种做法、反向操作的误差 architecture/command/command_bench.cpp 手动编译，用法见文件开头
+add_demo(lockstep architecture/fixed/lockstep_demo.cpp)
+add_demo(fixed_orbit architecture/fixed/orbit_demo.cpp)
+add_algo_test(fixed_test architecture/fixed/fixed_test.cpp)
+# 各种定点格式的精度、轨道误差、加法顺序与 fma 导致的不同步、速度、不同编译选项下的哈希 architecture/fixed/fixed_bench.cpp 手动编译，用法见文件开头
