@@ -1,6 +1,7 @@
 /* =============================================================
-   游戏算法图解 · 技术手稿主题
-   纸张底色 + 墨色文字 + 唯一的朱红强调色；宋体标题，等宽标注。
+   图解系列 · 技术手稿主题（本书：图解游戏算法 · 橙皮书）
+   纸张底色 + 墨色文字 + 唯一的强调色；宋体标题，等宽标注。
+   系列中每本书只有强调色不同：--book-accent（橙皮书朱红、绿皮书石绿、蓝皮书石青）。
    ============================================================= */
 
 /* ---------- 颜色：暗色（Starlight 默认基准） ---------- */
@@ -8,7 +9,7 @@
 	--ga-paper: #141311;
 	--ga-raised: #1b1a17;
 	--ga-ink: #ece7dc;
-	--ga-vermilion: #e8664a;
+	--book-accent: #e8664a;
 	--ga-grid-line: rgb(236 231 220 / 0.045);
 
 	--sl-color-white: #f2eee4;
@@ -25,7 +26,7 @@
 	--sl-color-accent-high: #f3a28f;
 
 	--sl-color-text: var(--sl-color-gray-2);
-	--sl-color-text-accent: var(--ga-vermilion);
+	--sl-color-text-accent: var(--book-accent);
 	--sl-color-bg-nav: var(--ga-paper);
 	--sl-color-bg-sidebar: var(--ga-paper);
 	--sl-color-bg-inline-code: var(--sl-color-gray-6);
@@ -39,7 +40,7 @@
 	--ga-paper: #f4f1ea;
 	--ga-raised: #fbf9f4;
 	--ga-ink: #1a1915;
-	--ga-vermilion: #c8402a;
+	--book-accent: #c8402a;
 	--ga-grid-line: rgb(26 25 21 / 0.05);
 
 	--sl-color-white: #1a1915;
@@ -57,7 +58,7 @@
 	--sl-color-accent-high: #9c2f1d;
 
 	--sl-color-text: var(--sl-color-gray-1);
-	--sl-color-text-accent: var(--ga-vermilion);
+	--sl-color-text-accent: var(--book-accent);
 	--sl-color-text-invert: var(--ga-paper);
 	--sl-color-bg-nav: var(--ga-paper);
 	--sl-color-bg-sidebar: var(--ga-paper);
@@ -128,7 +129,7 @@ site-search kbd {
 	background: transparent;
 	color: var(--sl-color-white);
 	font-weight: 600;
-	box-shadow: inset 2px 0 0 var(--ga-vermilion);
+	box-shadow: inset 2px 0 0 var(--book-accent);
 }
 .sidebar-content ul ul {
 	border-inline-start-color: var(--sl-color-hairline-light);
@@ -148,7 +149,7 @@ starlight-toc a {
 	color: var(--sl-color-gray-3);
 }
 starlight-toc a[aria-current='true'] {
-	color: var(--ga-vermilion);
+	color: var(--book-accent);
 }
 
 /* ---------- 正文排版 ---------- */
@@ -179,12 +180,12 @@ starlight-toc a[aria-current='true'] {
 }
 .sl-markdown-content a:not(:where(.not-content *)) {
 	color: var(--sl-color-white);
-	text-decoration-color: var(--ga-vermilion);
+	text-decoration-color: var(--book-accent);
 	text-decoration-thickness: 1px;
 	text-underline-offset: 0.25em;
 }
 .sl-markdown-content a:not(:where(.not-content *)):hover {
-	color: var(--ga-vermilion);
+	color: var(--book-accent);
 }
 .sl-markdown-content :not(pre) > code {
 	padding: 0.1em 0.35em;
@@ -245,8 +246,8 @@ starlight-toc a[aria-current='true'] {
 }
 .starlight-aside--caution,
 .starlight-aside--danger {
-	--sl-color-asides-text-accent: var(--ga-vermilion);
-	border-color: color-mix(in srgb, var(--ga-vermilion) 45%, transparent);
+	--sl-color-asides-text-accent: var(--book-accent);
+	border-color: color-mix(in srgb, var(--book-accent) 45%, transparent);
 }
 .starlight-aside__icon {
 	display: none;

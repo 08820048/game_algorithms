@@ -1,0 +1,174 @@
+---
+/**
+ * 图解系列的书目：首页用完整版（三栏卡片），文章页脚用一行的紧凑版。
+ * 当前这本书标"本书"，还没上线的书标"筹备中"，不给链接。
+ */
+import { book, series } from '../data/book';
+
+interface Props {
+	compact?: boolean;
+}
+const { compact = false } = Astro.props;
+const status = (id: string, href?: string) => (id === book.id ? '本书' : href ? '' : '筹备中');
+---
+
+{
+	compact ? (
+		<p class="series-line">
+			<span class="label">{book.seriesName}</span>
+			{series.map((b) => (
+				<span class="item">
+					<i style={`background:${b.color}`} aria-hidden="true" />
+					{b.href && b.id !== book.id ? <a href={b.href}>{b.edition} · {b.name}</a> : <span>{b.edition} · {b.name}</span>}
+					{status(b.id, b.href) && <small>（{status(b.id, b.href)}）</small>}
+				</span>
+			))}
+		</p>
+	) : (
+		<div class="series">
+			<div class="head">
+				<h2>{book.seriesName}</h2>
+				<p>同一种写法的几本书，用封面颜色区分</p>
+			</div>
+			<ol>
+				{series.map((b) => {
+					const s = status(b.id, b.href);
+					const inner = (
+						<>
+							<span class="swatch" style={`background:${b.color}`} aria-hidden="true" />
+							<span class="edition">{b.edition}</span>
+							<span class="name">{b.name}</span>
+							<span class="state">{s || '已上线'}</span>
+						</>
+					);
+					return <li class:list={[{ current: b.id === book.id }]}>{b.href && b.id !== book.id ? <a href={b.href}>{inner}</a> : <div>{inner}</div>}</li>;
+				})}
+			</ol>
+		</div>
+	)
+}
+
+<style>
+	/* ---------- 紧凑版（文章页脚） ---------- */
+	.series-line {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.25rem;
+		margin: 2rem 0 0;
+		padding-top: 1rem;
+		border-top: 1px solid var(--sl-color-hairline-light);
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	.series-line .label {
+		color: var(--sl-color-gray-2);
+	}
+	.series-line .item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+	.series-line i {
+		width: 0.55rem;
+		height: 0.55rem;
+		border-radius: 1px;
+	}
+	.series-line a {
+		color: inherit;
+	}
+	.series-line small {
+		font-size: inherit;
+	}
+
+	/* ---------- 完整版（首页） ---------- */
+	.head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.25rem;
+	}
+	.head h2 {
+		margin: 0;
+		font-family: var(--ga-font-serif);
+		font-size: 2.25rem;
+		font-weight: 700;
+		color: var(--sl-color-white);
+	}
+	.head p {
+		margin: 0;
+		font-size: 0.875rem;
+		color: var(--sl-color-gray-3);
+	}
+	ol {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		border-top: 1px solid var(--ga-ink);
+		border-bottom: 1px solid var(--sl-color-hairline-light);
+	}
+	li + li {
+		border-left: 1px solid var(--sl-color-hairline-light);
+	}
+	li > a,
+	li > div {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-template-areas:
+			'swatch edition'
+			'swatch name'
+			'swatch state';
+		gap: 0.15rem 0.9rem;
+		height: 100%;
+		padding: 1.1rem 1.25rem;
+		color: inherit;
+		text-decoration: none;
+	}
+	li > a:hover {
+		background: var(--sl-color-gray-6);
+	}
+	.swatch {
+		grid-area: swatch;
+		width: 0.75rem;
+		height: 100%;
+		min-height: 3.5rem;
+		border-radius: 1px;
+	}
+	.edition {
+		grid-area: edition;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.14em;
+		color: var(--sl-color-gray-3);
+	}
+	.name {
+		grid-area: name;
+		font-family: var(--ga-font-serif);
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: var(--sl-color-white);
+	}
+	.state {
+		grid-area: state;
+		font-size: 0.8125rem;
+		color: var(--sl-color-gray-3);
+	}
+	li.current .state {
+		color: var(--book-accent);
+	}
+	@media (max-width: 50rem) {
+		ol {
+			grid-template-columns: 1fr;
+		}
+		li + li {
+			border-left: 0;
+			border-top: 1px solid var(--sl-color-hairline-light);
+		}
+		.head {
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+	}
+</style>

@@ -1,6 +1,8 @@
-# 游戏算法图解
+# 图解游戏算法 · 橙皮书
 
-用可交互的演示和 C++ 代码，讲清楚游戏开发中的常见算法。计划部署在 https://algo.xuyi.dev 。
+图解系列的第一本（橙皮书）：用可交互的演示和 C++ 代码，讲清楚游戏开发中的常见算法。网站：https://algo.xuyi.dev 。
+
+同系列：图解 C++（绿皮书，筹备中）、图解数据结构与算法（蓝皮书，计划中）。
 
 - 网站：[Astro](https://astro.build) + [Starlight](https://starlight.astro.build)
 - 演示：C++20 + [raylib](https://www.raylib.com)，桌面端直接运行，Web 端通过 Emscripten 编译为 WebAssembly 嵌入文章

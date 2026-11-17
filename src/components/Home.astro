@@ -2,12 +2,17 @@
 import Demo from './Demo.astro';
 import Toc from './Toc.astro';
 import { stats } from '../data/curriculum';
+import { book } from '../data/book';
+import Series from './Series.astro';
 ---
 
 <div class="home not-content">
 	<header class="masthead">
-		<p class="kicker">Game Algorithms, Illustrated · C++20 / WebAssembly</p>
-		<h1>游戏算法<br />图解</h1>
+		<p class="kicker">
+			<span class="edition">{book.seriesName} · {book.edition}</span>
+			<span>Game Algorithms, Illustrated · C++20 / WebAssembly</span>
+		</p>
+		<h1>图解<br />游戏算法</h1>
 		<div class="intro">
 			<p class="lede">
 				寻路、碰撞、AI 与程序化生成。每个算法都配有可以亲手操作、单步执行的演示，以及经过测试、可直接放进项目的
@@ -53,13 +58,17 @@ import { stats } from '../data/curriculum';
 	<section class="contents" id="contents">
 		<div class="contents-head">
 			<h2>目录</h2>
-			<p>共 {stats.parts} 卷 {stats.total} 章，持续更新中</p>
+			<p>共 {stats.parts} 卷 {stats.total} 章，{stats.published === stats.total ? '已全部完成' : '持续更新中'}</p>
 		</div>
 		<Toc />
 	</section>
 
+	<section class="series-section">
+		<Series />
+	</section>
+
 	<footer class="foot">
-		<span>游戏算法图解 · XuYi 著</span>
+		<span>{book.name} · {book.edition} · XuYi 著</span>
 		<span>代码 MIT · 文章 CC BY-NC-SA 4.0</span>
 	</footer>
 </div>
@@ -99,12 +108,27 @@ import { stats } from '../data/curriculum';
 	}
 	.kicker {
 		grid-area: kicker;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
 		margin: 0 0 2rem;
 		font-family: var(--__sl-font-mono);
 		font-size: 0.75rem;
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 		color: var(--sl-color-gray-3);
+	}
+	.edition {
+		padding: 0.2rem 0.55rem;
+		border: 1px solid var(--book-accent);
+		border-radius: 2px;
+		color: var(--book-accent);
+		letter-spacing: 0.2em;
+		text-transform: none;
+	}
+	.series-section {
+		margin-top: 4rem;
 	}
 	h1 {
 		grid-area: title;
@@ -155,11 +179,11 @@ import { stats } from '../data/curriculum';
 		color: var(--ga-paper);
 	}
 	.btn.primary:hover {
-		background: var(--ga-vermilion);
-		border-color: var(--ga-vermilion);
+		background: var(--book-accent);
+		border-color: var(--book-accent);
 	}
 	.btn:focus-visible {
-		outline: 2px solid var(--ga-vermilion);
+		outline: 2px solid var(--book-accent);
 		outline-offset: 2px;
 	}
 	.colophon {
@@ -247,7 +271,7 @@ import { stats } from '../data/curriculum';
 	.foot {
 		display: flex;
 		justify-content: space-between;
-		margin-top: 5rem;
+		margin-top: 3rem;
 		padding-top: 1rem;
 		border-top: 1px solid var(--sl-color-hairline-light);
 		font-family: var(--__sl-font-mono);

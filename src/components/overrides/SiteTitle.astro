@@ -1,11 +1,13 @@
 ---
-/** 站点标识：朱红印章 + 宋体书名 */
+/** 站点标识：主题色印章 + 宋体书名 + 系列中的册名（橙皮书 / 绿皮书 / 蓝皮书） */
+import { book } from '../../data/book';
 const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 ---
 
 <a href={siteTitleHref} class="site-title">
-	<span class="seal" aria-hidden="true">算</span>
+	<span class="seal" aria-hidden="true">{book.seal}</span>
 	<span class="name" translate="no">{siteTitle}</span>
+	<span class="edition">{book.edition}</span>
 </a>
 
 <style>
@@ -25,7 +27,7 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 		width: 1.75rem;
 		height: 1.75rem;
 		border-radius: 2px;
-		background: var(--ga-vermilion);
+		background: var(--book-accent);
 		color: #fbf9f4;
 		font-family: var(--ga-font-serif);
 		font-size: 1rem;
@@ -38,5 +40,20 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 		font-size: 1.125rem;
 		font-weight: 700;
 		letter-spacing: 0.04em;
+	}
+	.edition {
+		flex-shrink: 0;
+		padding: 0.1rem 0.4rem;
+		border: 1px solid var(--book-accent);
+		border-radius: 2px;
+		color: var(--book-accent);
+		font-size: 0.6875rem;
+		letter-spacing: 0.12em;
+		line-height: 1.4;
+	}
+	@media (max-width: 22rem) {
+		.edition {
+			display: none;
+		}
 	}
 </style>

@@ -7,7 +7,7 @@ export default defineConfig({
 	site: 'https://algo.xuyi.dev',
 	integrations: [
 		starlight({
-			title: '游戏算法图解',
+			title: '图解游戏算法',
 			description: '用可交互的演示和 C++ 代码，讲清楚游戏开发中的常见算法。',
 			favicon: '/favicon.svg',
 			defaultLocale: 'root',
@@ -45,7 +45,7 @@ export default defineConfig({
 						editorTabBarBackground: 'var(--ga-paper)',
 						editorActiveTabBackground: 'var(--ga-raised)',
 						editorActiveTabForeground: 'var(--sl-color-gray-2)',
-						editorActiveTabIndicatorTopColor: 'var(--ga-vermilion)',
+						editorActiveTabIndicatorTopColor: 'var(--book-accent)',
 						editorActiveTabIndicatorBottomColor: 'transparent',
 						editorTabBarBorderBottomColor: 'var(--sl-color-hairline-light)',
 						terminalBackground: 'var(--ga-raised)',
@@ -53,8 +53,8 @@ export default defineConfig({
 						terminalTitlebarBorderBottomColor: 'var(--sl-color-hairline-light)',
 					},
 					textMarkers: {
-						markBackground: 'color-mix(in srgb, var(--ga-vermilion) 12%, transparent)',
-						markBorderColor: 'var(--ga-vermilion)',
+						markBackground: 'color-mix(in srgb, var(--book-accent) 12%, transparent)',
+						markBorderColor: 'var(--book-accent)',
 					},
 				},
 			},
