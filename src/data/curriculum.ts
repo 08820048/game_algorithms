@@ -117,7 +117,7 @@ export const parts: Part[] = [
 			{ no: '6.3', title: '命令模式、录像回放与撤销', href: '/architecture/command/', status: 'published' },
 			{ no: '6.4', title: '定点数与确定性计算', href: '/architecture/fixed-point/', status: 'published' },
 			{ no: '6.5', title: '网络同步：帧同步与状态同步', href: '/architecture/netsync/', status: 'published' },
-			planned('6.6', '网络同步：客户端预测、回滚与延迟补偿'),
+			{ no: '6.6', title: '网络同步：客户端预测、回滚与延迟补偿', href: '/architecture/prediction/', status: 'published' },
 		],
 	},
 ];

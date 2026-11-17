@@ -265,3 +265,8 @@ add_demo(net_lockstep architecture/netsync/lockstep_net_demo.cpp)
 add_demo(net_snapshot architecture/netsync/snapshot_demo.cpp)
 add_algo_test(net_test architecture/netsync/net_test.cpp)
 # 帧同步的输入延迟与停顿、攒包、按键到看见的延迟、带宽与单位数、插值延迟与外推、中途加入 architecture/netsync/net_bench.cpp 手动编译，用法见文件开头
+add_demo(net_predict architecture/prediction/predict_demo.cpp)
+add_demo(net_rollback architecture/prediction/rollback_demo.cpp)
+add_demo(net_lagcomp architecture/prediction/lagcomp_demo.cpp)
+add_algo_test(predict_test architecture/prediction/predict_test.cpp)
+# 预测与和解的四种模式、别人挡路导致的纠正、回滚的 D 与重算量、输入变化频率、存档与重算的开销、延迟补偿的命中率与回退上限 architecture/prediction/predict_bench.cpp 手动编译，用法见文件开头
