@@ -261,3 +261,7 @@ add_demo(lockstep architecture/fixed/lockstep_demo.cpp)
 add_demo(fixed_orbit architecture/fixed/orbit_demo.cpp)
 add_algo_test(fixed_test architecture/fixed/fixed_test.cpp)
 # 各种定点格式的精度、轨道误差、加法顺序与 fma 导致的不同步、速度、不同编译选项下的哈希 architecture/fixed/fixed_bench.cpp 手动编译，用法见文件开头
+add_demo(net_lockstep architecture/netsync/lockstep_net_demo.cpp)
+add_demo(net_snapshot architecture/netsync/snapshot_demo.cpp)
+add_algo_test(net_test architecture/netsync/net_test.cpp)
+# 帧同步的输入延迟与停顿、攒包、按键到看见的延迟、带宽与单位数、插值延迟与外推、中途加入 architecture/netsync/net_bench.cpp 手动编译，用法见文件开头
